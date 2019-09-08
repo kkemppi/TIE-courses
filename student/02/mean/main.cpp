@@ -11,7 +11,7 @@ int main()
     double value = 0; {
         if (amount > 0) {
             for (int num = 0; num < amount; ++num ) {
-                cout << "Input " << num << ". number: ";
+                cout << "Input " << num+1 << ". number: ";
                 cin >> value;
                 sum = sum + value;
             }

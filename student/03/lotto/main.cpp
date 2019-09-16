@@ -42,7 +42,7 @@ int main()
     int drawn = 0;
     cin >> drawn;
     if (ball_amounts(drawn, balls) == false)
-        return 1;
+        return 0;
     else {
         cout << "The probability of guessing all " << drawn <<  " balls correctly is 1/" << chance(drawn, balls) << endl;
     }

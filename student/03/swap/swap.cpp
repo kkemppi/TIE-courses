@@ -1,6 +1,6 @@
 #include "swap.hh"
 
-int swap(int& i, int& j)
+void swap(int& i, int& j)
 {
     int k = i;
     int l = j;

@@ -43,13 +43,13 @@ string encrypt(string input_text, string key)
 
 int main()
 {
-    cout << "Enter the encryption key: " << endl;
+    cout << "Enter the encryption key: ";
     string key;
     cin >> key;
     if (key_check(key) == false)
         return EXIT_FAILURE;
     else {
-        cout << "Enter the text to be encrypted: " << endl;
+        cout << "Enter the text to be encrypted: ";
         string input_text;
         cin >> input_text;
         cout << "Encrypted text: " << encrypt(input_text, key) << endl;

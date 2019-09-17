@@ -11,7 +11,7 @@ public:
     int get_points();
     bool has_won();
     void add_points(int pts);
-    int points_;
+    int points_ = 0;
 private:
     string name_;
 };

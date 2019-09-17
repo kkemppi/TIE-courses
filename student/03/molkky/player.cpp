@@ -1,4 +1,5 @@
 #include "player.hh"
+#include <iostream>
 using  namespace std;
 
 
@@ -29,6 +30,7 @@ void Player::add_points(int pts) {
         points_ = points_ + pts;
     }
     else {
+        cout << "Teppo gets penalty points!" << endl;
         points_ = 25;
     }
 }

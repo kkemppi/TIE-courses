@@ -1,11 +1,39 @@
 #include <iostream>
 #include <string>
 #include <vector>
-
-
+#include <string>
 // TODO: Implement split function here
 // Do not change main function
 
+
+std::vector<std::string> split(std::string str, char token, bool truth=false){
+    std::vector<std::string>result;
+    while(str.size()){
+        unsigned long int index = str.find(token);
+        unsigned long int a = std::string::npos;
+        if(index!= a){
+            result.push_back(str.substr(0,index));
+            str = str.substr(index+1);
+            if(str.size()==0)result.push_back(str);
+        }else{
+            result.push_back(str);
+            str = "";
+        }
+    }
+    if(truth){
+        int b = (result.size());
+        std::vector <std::string> withoutspaces;
+        for(int i=0; i<b; ++i){
+            std::string word = result.at(i);
+            if(word == ""){
+            }else{
+                withoutspaces.push_back(result.at(i));
+            }
+        }
+        return withoutspaces;
+    }
+    return result;
+}
 
 int main()
 {

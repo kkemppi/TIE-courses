@@ -99,27 +99,106 @@ void print(std::vector<std::vector<NumberTile>> &board){
 
 
 void move_board(std::vector<std::vector<NumberTile>> &board, char dir){
-    for ( auto y = 0; y < SIZE; y++ ){
-        int num=0;
-        int& a = num;
-        for ( auto x = 0; x < SIZE-1; x++ ){
-            if (board.at(y).at(x).getValue()==0){
-                if (board.at(y).at(x+1).getValue()!= 0){
-                    int value = board.at(y).at(x+1).getValue();
+    if (dir == 'a'){
+        for ( auto y = 0; y < SIZE; y++ ){
+            int num=0;
+            int& a = num;
+            for ( auto x = 0; x < SIZE-1; x++ ){
+                if (board.at(y).at(x).getValue()==0){
+                    if (board.at(y).at(x+1).getValue()!= 0){
+                        int value = board.at(y).at(x+1).getValue();
+                        board.at(y).at(x).setValue(value);
+                        board.at(y).at(x+1).setValue(0);
+                        x=-1;
+                    }else{
+                        continue;
+                    }
+                }else if (board.at(y).at(x).getValue()==board.at(y).at(x+1).getValue()){
+                    int value = 2 * board.at(y).at(x).getValue();
                     board.at(y).at(x).setValue(value);
                     board.at(y).at(x+1).setValue(0);
-                    x=a;
-                }else{
-                    continue;
-                }
-            }else if (board.at(y).at(x).getValue()==board.at(y).at(x+1).getValue()){
-                int value = 2 * board.at(y).at(x).getValue();
-                board.at(y).at(x).setValue(value);
-                board.at(y).at(x+1).setValue(0);
-                a += 1;
-                x=a;
+                    a += 1;
 
+                }
             }
+
+        }
+
+    }
+    if (dir == 'd'){
+        for ( auto y = 0; y < SIZE; y++ ){
+            int num=3;
+            int& a = num;
+            for ( auto x = 3; x > 0; x-- ){
+                if (board.at(y).at(x).getValue()==0){
+                    if (board.at(y).at(x-1).getValue()!= 0){
+                        int value = board.at(y).at(x-1).getValue();
+                        board.at(y).at(x).setValue(value);
+                        board.at(y).at(x-1).setValue(0);
+                        x=4;
+                    }else{
+                        continue;
+                    }
+                }else if (board.at(y).at(x).getValue()==board.at(y).at(x-1).getValue()){
+                    int value = 2 * board.at(y).at(x).getValue();
+                    board.at(y).at(x).setValue(value);
+                    board.at(y).at(x-1).setValue(0);
+                    a -= 1;
+                }
+            }
+
+        }
+
+    }
+    if (dir == 'w'){
+        for ( auto x = 0; x < SIZE; x++ ){
+            int num=0;
+            int& a = num;
+            for ( auto y = 0; y < SIZE-1; y++ ){
+                if (board.at(y).at(x).getValue()==0){
+                    if (board.at(y+1).at(x).getValue()!= 0){
+                        int value = board.at(y+1).at(x).getValue();
+                        board.at(y).at(x).setValue(value);
+                        board.at(y+1).at(x).setValue(0);
+                        y=-1;
+                    }else{
+                        continue;
+                    }
+                }else if (board.at(y).at(x).getValue()==board.at(y+1).at(x).getValue()){
+                    int value = 2 * board.at(y).at(x).getValue();
+                    board.at(y).at(x).setValue(value);
+                    board.at(y+1).at(x).setValue(0);
+                    a += 1;
+
+                }
+            }
+
+        }
+
+    }
+    if (dir == 's'){
+        for ( auto x = 0; x < SIZE; x++ ){
+            int num=3;
+            int& a = num;
+            for ( auto y = 3; y > 0; y--){
+                if (board.at(y).at(x).getValue()==0){
+                    if (board.at(y-1).at(x).getValue()!= 0){
+                        int value = board.at(y-1).at(x).getValue();
+                        board.at(y).at(x).setValue(value);
+                        board.at(y-1).at(x).setValue(0);
+                        y=4;
+                    }else{
+                        continue;
+                    }
+                }else if (board.at(y).at(x).getValue()==board.at(y-1).at(x).getValue()){
+                    int value = 2 * board.at(y).at(x).getValue();
+                    board.at(y).at(x).setValue(value);
+                    board.at(y-1).at(x).setValue(0);
+                    a -= 1;
+
+                }
+            }
+
         }
 
     }

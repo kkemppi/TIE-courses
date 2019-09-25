@@ -12,11 +12,10 @@
  *  Game will end when the goal value asked (orig 2048) is reached or new
  * tile can't be added to the board.
  *
- * Program author ( Fill with your own info )
- * Name: Teemu Teekkari
- * Student number: 123456
- * UserID: teekkart ( Necessary due to gitlab folder naming. )
- * E-Mail: teemu.teekkari@tuni.fi
+ * Name: Mikko Kemppi & Olli-Pekka Pettersson
+ * Student number: 272670 & 283651
+ * UserID: kemppim & pertterso
+ * E-Mail: mikko.kemppi@tuni.fi & olli.pettersson@tuni.fi
  *
  * Notes about the program and it's implementation:
  * */
@@ -39,7 +38,7 @@ void newValue(std::vector<std::vector<NumberTile>> &board,
                std::uniform_int_distribution<int> &distr){
     // Tries to assign NEW_VAl to randomly selected tile. Continues trying until
     // newVal() returns true.
-    while(!board.at(distr(rEng)).at(distr(rEng)).setValue(NEW_VALUE));
+    while(!board.at(distr(rEng)).at(distr(rEng)).setValue(NEW_VALUE, true));
 }
 
 // Initializes the board to size SIZE x SIZE and adds SIZE tiles with NEW_VALUE
@@ -98,8 +97,36 @@ void print(std::vector<std::vector<NumberTile>> &board){
     std::cout << std::string(PRINT_WIDTH * SIZE + 1, '-') << std::endl;
 }
 
-int game(std::vector<std::vector<NumberTile>> &board)
-{
+
+void move_board(std::vector<std::vector<NumberTile>> &board, char dir){
+    for ( auto y = 0; y < SIZE; y++ ){
+        int num=0;
+        int& a = num;
+        for ( auto x = 0; x < SIZE-1; x++ ){
+            if (board.at(y).at(x).getValue()==0){
+                if (board.at(y).at(x+1).getValue()!= 0){
+                    int value = board.at(y).at(x+1).getValue();
+                    board.at(y).at(x).setValue(value);
+                    board.at(y).at(x+1).setValue(0);
+                    x=a;
+                }else{
+                    continue;
+                }
+            }else if (board.at(y).at(x).getValue()==board.at(y).at(x+1).getValue()){
+                int value = 2 * board.at(y).at(x).getValue();
+                board.at(y).at(x).setValue(value);
+                board.at(y).at(x+1).setValue(0);
+                a += 1;
+                x=a;
+
+            }
+        }
+
+    }
+}
+
+int game(std::vector<std::vector<NumberTile>> &board, std::default_random_engine &rEng,
+         std::uniform_int_distribution<int> &distr){
     while (true){
         std::cout << "Dir> ";
         char dir;
@@ -111,11 +138,17 @@ int game(std::vector<std::vector<NumberTile>> &board)
         // User wants to stop the game
         if (dir == 'q'){
             return 0;
-        }
+
         // Tähän tulee pelilauden muutoksen toiminta
-        print(board);
+        }else{
+            move_board(board, dir);
+            while(!board.at(distr(rEng)).at(distr(rEng)).setValue(NEW_VALUE, true));
+            print(board);
+        }
     }
 }
+
+
 
 int main()
 {
@@ -127,6 +160,6 @@ int main()
 
     initBoard(board, randomEng, distr);
     print(board);
-    game(board);
+    game(board, randomEng, distr);
     return 0;
 }

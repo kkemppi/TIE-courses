@@ -33,17 +33,21 @@ void NumberTile::print(int width)
     std::cout << "|" << std::setw(width - 1) << value_;
 }
 
-bool NumberTile::setValue(int value)
+bool NumberTile::setValue(int value, bool new_value)
 {
-    // Students should write their own implementation here. Existing return
-    // statement is allowed to be modified or removed.
-    if (value_ == 0)  {
+    //Add NEW_VALUE to a empty tile
+    if (new_value) {
+        if (value_ == 0)  {
+            value_ = value;
+            return true;
+        }
+        else {
+            return false;
+        }
+    }else{
         value_ = value;
-        return true;
     }
-    else {
-        return false;
-    }
+
 }
 
 int NumberTile::getValue()

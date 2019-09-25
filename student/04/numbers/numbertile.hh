@@ -31,7 +31,7 @@ public:
 
     // Tries to set a new value to the tile. Returns true if successful, false
     // if the tile already contains some value.
-    bool setValue(int value);
+    bool setValue(int value, bool new_value=false);
 
     int getValue();
 

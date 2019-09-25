@@ -98,6 +98,25 @@ void print(std::vector<std::vector<NumberTile>> &board){
     std::cout << std::string(PRINT_WIDTH * SIZE + 1, '-') << std::endl;
 }
 
+int game(std::vector<std::vector<NumberTile>> &board)
+{
+    while (true){
+        std::cout << "Dir> ";
+        char dir;
+        std::cin >> dir;
+        // Check for viable commands
+        if (dir != 'a' && dir != 'd' && dir != 's' && dir != 'w' && dir != 'q'){
+            continue;
+        }
+        // User wants to stop the game
+        if (dir == 'q'){
+            return 0;
+        }
+        // Tähän tulee pelilauden muutoksen toiminta
+        print(board);
+    }
+}
+
 int main()
 {
     // Declare the board and randomengine.
@@ -108,4 +127,6 @@ int main()
 
     initBoard(board, randomEng, distr);
     print(board);
+    game(board);
+    return 0;
 }

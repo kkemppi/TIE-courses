@@ -18,7 +18,7 @@ std::pair<int, int>operator +(std::pair<int, int> lhs, std::pair<int, int> rhs){
 NumberTile::NumberTile(int value,
                        std::pair<int, int> coords,
                        std::vector<std::vector<NumberTile> > *board)
-    : value_(value)
+    : value_(value), coords_(coords), board_(board)
 {
     // Students should write their own implementation here, if necessary.
 

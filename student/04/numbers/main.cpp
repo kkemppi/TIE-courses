@@ -44,7 +44,7 @@ void newValue(std::vector<std::vector<NumberTile>> &board,
 // Initializes the board to size SIZE x SIZE and adds SIZE tiles with NEW_VALUE
 // to it through new_value() func after initializing the random engine with
 // a seed value.
-void initBoard(std::vector<std::vector<NumberTile>> &board,
+int initBoard(std::vector<std::vector<NumberTile>> &board,
                 std::default_random_engine &rEng,
                 std::uniform_int_distribution<int> &distr){
 
@@ -77,6 +77,14 @@ void initBoard(std::vector<std::vector<NumberTile>> &board,
     for ( int i = 0 ; i < SIZE ; ++i ){
         newValue(board, rEng, distr);
     }
+    std::cout << "Give a goal value or an empty line: ";
+    std::string goal;
+    getline(std::cin, goal);
+    if(goal == "") {
+        return DEFAULT_GOAL;
+    }
+int value = std::stoi(goal);
+return value;
 }
 
 // Prints the board.
@@ -95,6 +103,29 @@ void print(std::vector<std::vector<NumberTile>> &board){
     }
     // Print a last row of dashes so that the board looks complete.
     std::cout << std::string(PRINT_WIDTH * SIZE + 1, '-') << std::endl;
+}
+
+int greatest_value(std::vector<std::vector<NumberTile>> &board){
+    int greatest = 0;
+    int& biggest = greatest;
+    for ( auto y = 0; y < SIZE; y++ ){
+            for ( auto x = 0; x < SIZE; x++ ){
+                if (board.at(x).at(y).getValue() > biggest){
+                    biggest = board.at(x).at(y).getValue();
+                }
+            }
+        }
+    return biggest;
+}
+
+bool game_over(std::vector<std::vector<NumberTile>> &board){
+    for (int y=0; y<SIZE; ++y){
+        for (int x=0; x<SIZE;++x){
+            if (board.at(y).at(x).getValue()==0){
+                return false;
+            }
+        }
+    }return true;
 }
 
 void move_board(std::vector<std::vector<NumberTile>> &board, char dir){
@@ -261,13 +292,14 @@ void move_board(std::vector<std::vector<NumberTile>> &board, char dir){
 
 
 int game(std::vector<std::vector<NumberTile>> &board, std::default_random_engine &rEng,
-         std::uniform_int_distribution<int> &distr){
+         std::uniform_int_distribution<int> &distr, int goal){
     while (true){
         std::cout << "Dir> ";
         char dir;
         std::cin >> dir;
         // Check for viable commands
         if (dir != 'a' && dir != 'd' && dir != 's' && dir != 'w' && dir != 'q'){
+            std::cout << "Error: unknown command." << std::endl;
             continue;
         }
         // User wants to stop the game
@@ -279,6 +311,14 @@ int game(std::vector<std::vector<NumberTile>> &board, std::default_random_engine
             move_board(board, dir);
             while(!board.at(distr(rEng)).at(distr(rEng)).setValue(NEW_VALUE, true));
             print(board);
+            if (greatest_value(board) >= goal){
+                std::cout << "You reached the goal value of " << goal << "!" << std::endl;
+                return 0;
+            }
+            else if (game_over(board)){
+                std::cout << "Can't add new tile, you lost!" << std::endl;
+                return 0;
+            }
         }
     }
 }
@@ -292,9 +332,8 @@ int main()
     std::default_random_engine randomEng;
     // And initialize the disrt to give numbers from the correct
     std::uniform_int_distribution<int> distr(0, SIZE - 1);
-
-    initBoard(board, randomEng, distr);
+    int goal;
+    goal = initBoard(board, randomEng, distr);
     print(board);
-    game(board, randomEng, distr);
-    return 0;
+    game(board, randomEng, distr, goal);
 }

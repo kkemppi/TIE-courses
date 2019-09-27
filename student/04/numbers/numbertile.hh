@@ -2,8 +2,11 @@
  *
  * Acts as a single tile in the board.
  *
- * Students can modify both parts of the class and add their own variables
- * and methods. Implementations for the methods should be in the source file.
+ * Name: Mikko Kemppi & Olli-Pekka Pettersson
+ * Student number: 272670 & 283651
+ * UserID: kemppim & pertterso
+ * E-Mail: mikko.kemppi@tuni.fi & olli.pettersson@tuni.fi
+ *
  *
  * */
 #ifndef NUMBERTILE_HH
@@ -17,12 +20,6 @@ public:
     // Public part contains variables and methods that can be used outside the
     // class itself.
 
-    /* About pairs: the elements in a pair can be accessed with pair.first
-    * and pair.second. If you do not wish to use pairs, you can modify the
-    * given code to work without. Just replace the pair-parameter here & in the
-    * source file with "int y, int x" and then modify the main.cpp in the
-    * indicated spot.
-    * */
     // Constructor that takes in a value, a location and the board the tile is on.
     NumberTile(int value, std::pair<int, int> coords,
                std::vector<std::vector<NumberTile> > *board);
@@ -43,6 +40,7 @@ private:
     // Value of the tile.
     int value_;
 
+    // Developer notes: These were not used and are just to get rid of issues
     std::pair<int, int> coords_;
     std::vector<std::vector<NumberTile>> *board_;
 };

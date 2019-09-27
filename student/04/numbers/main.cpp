@@ -44,6 +44,19 @@ void newValue(std::vector<std::vector<NumberTile>> &board,
 // Initializes the board to size SIZE x SIZE and adds SIZE tiles with NEW_VALUE
 // to it through new_value() func after initializing the random engine with
 // a seed value.
+
+bool is_int(std::string goal){
+    try  {
+        throw(std::stoi(goal));
+    }
+    catch (const std::invalid_argument&)  {
+        return false;
+    }
+    catch (...){
+        return true;
+    }
+}
+
 int initBoard(std::vector<std::vector<NumberTile>> &board,
                 std::default_random_engine &rEng,
                 std::uniform_int_distribution<int> &distr){
@@ -80,12 +93,16 @@ int initBoard(std::vector<std::vector<NumberTile>> &board,
     std::cout << "Give a goal value or an empty line: ";
     std::string goal;
     getline(std::cin, goal);
-    if(goal == "") {
+    if (!is_int(goal)){
         return DEFAULT_GOAL;
     }
-int value = std::stoi(goal);
-return value;
+    else if(goal == "") {
+        return DEFAULT_GOAL;
+    }
+return std::stoi(goal);
 }
+
+
 
 // Prints the board.
 void print(std::vector<std::vector<NumberTile>> &board){
@@ -309,13 +326,14 @@ int game(std::vector<std::vector<NumberTile>> &board, std::default_random_engine
         // Tähän tulee pelilauden muutoksen toiminta
         }else{
             move_board(board, dir);
-            while(!board.at(distr(rEng)).at(distr(rEng)).setValue(NEW_VALUE, true));
-            print(board);
             if (greatest_value(board) >= goal){
+                print(board);
                 std::cout << "You reached the goal value of " << goal << "!" << std::endl;
                 return 0;
             }
-            else if (game_over(board)){
+            while(!board.at(distr(rEng)).at(distr(rEng)).setValue(NEW_VALUE, true));
+            print(board);
+            if (game_over(board)){
                 std::cout << "Can't add new tile, you lost!" << std::endl;
                 return 0;
             }

@@ -24,7 +24,8 @@ public:
     * indicated spot.
     * */
     // Constructor that takes in a value, a location and the board the tile is on.
-    NumberTile(int value, std::pair<int, int> coords,  std::vector<std::vector<NumberTile>> *board);
+    NumberTile(int value, std::pair<int, int> coords,
+               std::vector<std::vector<NumberTile> > *board);
 
     // Prints the tile in the desired width.
     void print( int width );
@@ -41,6 +42,9 @@ private:
 
     // Value of the tile.
     int value_;
+
+    std::pair<int, int> coords_;
+    std::vector<std::vector<NumberTile>> *board_;
 };
 
 #endif // NUMBERTILE_HH

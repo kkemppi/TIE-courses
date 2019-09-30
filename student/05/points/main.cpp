@@ -15,7 +15,7 @@ int main()
     string row;
     map<string, int> points_sum;
     if (!input) {
-        cout << "Error! The file " << input_file <<  "cannot be opened." << endl;
+        cout << "Error! The file " << input_file <<  " cannot be opened." << endl;
         return EXIT_FAILURE;
     }
     while (getline(input, row)){

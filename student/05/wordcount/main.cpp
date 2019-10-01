@@ -50,8 +50,9 @@ int main()
         words_in_row = split(row);
         for (std::string word : words_in_row){
             if (word_at_rows.find(word) != word_at_rows.end()){
-                word_at_rows.at(word).push_back(rivi);
-
+                if (find(word_at_rows.at(word).begin(), word_at_rows.at(word).end(), rivi) == word_at_rows.at(word).end()){
+                    word_at_rows.at(word).push_back(rivi);
+                }
             }else{
                 word_at_rows.insert({word, {rivi}});
             }

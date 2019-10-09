@@ -30,15 +30,15 @@ std::vector<std::string> split(const std::string& s, const char delimiter, bool 
     return result;
 }
 
-void print(std::map<std::string, std::vector<std::string>> network, std::string id, std::string dots)
-{
+void print(std::map<std::string, std::vector<std::string>> network, std::string id, std::string dots){
     for (std::string name : network.at(id)){
         std::cout << dots << name << std::endl;
         if (!network.at(name).empty()){
-            dots += "..";
+            dots += ".." ;
             print(network, name, dots);
             dots = dots.substr(0, dots.length()-2);
-        }else{
+        }
+        else if(network.at(id).size() <= 1){
             dots = "..";
         }
     }
@@ -55,18 +55,24 @@ void count(std::map<std::string, std::vector<std::string>> network, std::string 
 }
 
 
-void depth(std::map<std::string, std::vector<std::string>> network, std::string id, int& biggest, int counter = 0){
+
+void network_depth(std::map<std::string, std::vector<std::string>> network, std::string id, int& depth, int counter = 0){
     for (std::string name : network.at(id)){
-        counter++;
+        ++ counter;
         if (!network.at(name).empty()){
-            depth(network, name, biggest, counter);
+            network_depth(network, name, depth, counter);
+            --counter;
         }
-        else if(counter > biggest){
-            biggest = counter;
+        else{
+            if (counter > depth){
+                depth = counter;
+                counter = 0;
+            }
+            else{
             counter = 0;
-        }else{
-            counter = 0;
+            }
         }
+
     }
 }
 
@@ -120,9 +126,9 @@ int main()
                 std::cout << "Erroneous parameters!" << std::endl << HELP_TEXT;
             }
             std::string id = parts.at(1);
-            int biggest = 0;
-            depth(network, id, biggest);
-            std::cout << 1 + biggest << std::endl;
+            int depth = 0;
+            network_depth(network, id, depth);
+            std::cout << 1 + depth << std::endl;
 
         } else if(command == "Q" or command == "q"){
            return EXIT_SUCCESS;

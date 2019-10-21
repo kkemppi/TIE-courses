@@ -231,7 +231,7 @@ int main()
         return EXIT_FAILURE;
     }else{
         while (true){
-            std::cout << "tramway>";
+            std::cout << "tramway> ";
             std::string input;
             std::getline(std::cin, input);
             if (input.find(' ') == std::string::npos){

@@ -41,7 +41,7 @@ std::vector<std::string> split(const std::string& s, char delimiter = ';'){
     return result;
 }
 
-bool routing(std::map<std::string, std::vector<std::string>> route, std::string inp)
+bool routing(std::map<std::string, std::vector<std::string>>& route, std::string inp)
 {
     std::ifstream file(inp);
     std::string row;
@@ -65,25 +65,105 @@ bool routing(std::map<std::string, std::vector<std::string>> route, std::string 
     return true;
 }
 
+void lines(std::map<std::string, std::vector<std::string>>& routes)
+{
+
+}
+
+void stations(std::map<std::string, std::vector<std::string>>& routes)
+{
+
+}
+
+void addstation(std::map<std::string, std::vector<std::string>>& routes, std::string route, std::string new_stop, std::string next_stop)
+{
+
+}
+
+void line(std::map<std::string, std::vector<std::string>>& routes, std::string route)
+{
+
+}
+
+void station(std::map<std::string, std::vector<std::string>>& routes, std::string stop)
+{
+
+}
+
+void addline(std::map<std::string, std::vector<std::string>>& routes, std::string route)
+{
+
+}
+
+void remove(std::map<std::string, std::vector<std::string>>& routes, std::string stop)
+{
+
+}
+
+
 // Short and sweet main.
 int main()
 {
-    std::map<std::string, std::vector<std::string>> route;
+    std::map<std::string, std::vector<std::string>> routes;
     print_rasse();
     std::string inp;
     std::cout << "Give a name for input file: ";
-    std::cin >> inp;
+    std::getline(std::cin, inp);
     std::ifstream file(inp);
     if ( not file ) {
         std::cout << "Error: File could not be read." << std::endl;
         return EXIT_FAILURE;
     }
-    else if (!routing(route, inp)){
+    else if (!routing(routes, inp)){
         std::cout << "Error: Invalid format in file." << std::endl;
         return EXIT_FAILURE;
-
-    }
-    else{
+    }else{
+        while (true){
+            std::cout << "tramway>";
+            std::string input;
+            std::getline(std::cin, input);
+            if (input.find(' ') == std::string::npos){
+                if (input == "LINES"){
+                    lines(routes);
+                }else if (input == "STATIONS"){
+                    stations(routes);
+                }else{
+                    if (input == "QUIT"){
+                        return EXIT_SUCCESS;
+                    }
+                    std::cout << "Error: Invalid input." << std::endl;
+                    continue;
+                }
+            }else{
+                std::vector<std::string> inputs;
+                inputs = split(input, ' ');
+                if (inputs.size() == 4){
+                    if (inputs.at(0) == "ADDSTATION"){
+                        addstation(routes, inputs.at(1), inputs.at(2), inputs.at(3));
+                    }else{
+                        std::cout << "Error: Invalid input." << std::endl;
+                        continue;
+                    }
+                }
+                else if (inputs.size() == 2){
+                    if (inputs.at(0) == "LINE"){
+                        line(routes, inputs.at(1));
+                    }
+                    else if (inputs.at(0) == "STATION"){
+                        station(routes, inputs.at(1));
+                    }
+                    else if (inputs.at(0) == "ADDLINE"){
+                        addline(routes, inputs.at(1));
+                    }
+                    else if (inputs.at(0) == "REMOVE"){
+                        remove(routes, inputs.at(1));
+                    }else{
+                        std::cout << "Error: Invalid input." << std::endl;
+                        continue;
+                    }
+                }
+            }
+        }
 
     }
     return EXIT_SUCCESS;

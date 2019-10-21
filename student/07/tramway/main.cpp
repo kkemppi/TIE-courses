@@ -5,7 +5,6 @@
 #include <map>
 #include <algorithm>
 #include <set>
-#include <boost/algorithm/string.hpp>
 
 // The most magnificent function in this whole program.
 // Prints a RASSE
@@ -236,7 +235,7 @@ int main()
         std::string input;
         std::getline(std::cin, input);
         if (input.find(' ') == std::string::npos){
-            boost::to_upper(input);
+            std::transform(input.begin(), input.end(), input.begin(), ::toupper);
             if (input == "LINES"){
                 lines(routes);
             }else if (input == "STATIONS"){
@@ -251,7 +250,7 @@ int main()
         }else{
             std::vector<std::string> inputs;
             inputs = split(input, ' ');
-            boost::to_upper(inputs.at(0));
+            std::transform(inputs.at(0).begin(), inputs.at(0).end(), inputs.at(0).begin(), ::toupper);
             if (inputs.at(0) == "ADDSTATION"){
                 if (inputs.size() == 4){
                     addstation(routes, inputs.at(1), inputs.at(2), inputs.at(3));

@@ -5,6 +5,7 @@
 #include <map>
 #include <algorithm>
 #include <set>
+#include <boost/algorithm/string.hpp>
 
 // The most magnificent function in this whole program.
 // Prints a RASSE
@@ -235,12 +236,13 @@ int main()
         std::string input;
         std::getline(std::cin, input);
         if (input.find(' ') == std::string::npos){
-            if (input == "LINES" || input == "lines"){
+            boost::to_upper(input);
+            if (input == "LINES"){
                 lines(routes);
-            }else if (input == "STATIONS" || input == "stations"){
+            }else if (input == "STATIONS"){
                 stations(routes);
             }else{
-                if (input == "QUIT" || input == "quit"){
+                if (input == "QUIT"){
                     return EXIT_SUCCESS;
                 }
                 std::cout << "Error: Invalid input." << std::endl;
@@ -249,7 +251,8 @@ int main()
         }else{
             std::vector<std::string> inputs;
             inputs = split(input, ' ');
-            if (inputs.at(0) == "ADDSTATION" || inputs.at(0) == "addstation"){
+            boost::to_upper(inputs.at(0));
+            if (inputs.at(0) == "ADDSTATION"){
                 if (inputs.size() == 4){
                     addstation(routes, inputs.at(1), inputs.at(2), inputs.at(3));
                 }
@@ -261,16 +264,16 @@ int main()
                 }
             }
             else if (inputs.size() == 2){
-                if (inputs.at(0) == "LINE" || inputs.at(0) == "line"){
+                if (inputs.at(0) == "LINE"){
                     line(routes, inputs.at(1));
                 }
-                else if (inputs.at(0) == "STATION" || inputs.at(0) == "station"){
+                else if (inputs.at(0) == "STATION"){
                     station(routes, inputs.at(1));
                 }
-                else if (inputs.at(0) == "ADDLINE" || inputs.at(0) == "addline"){
+                else if (inputs.at(0) == "ADDLINE"){
                     addline(routes, inputs.at(1));
                 }
-                else if (inputs.at(0) == "REMOVE" || inputs.at(0) == "remove"){
+                else if (inputs.at(0) == "REMOVE"){
                     remove(routes, inputs.at(1));
                 }else{
                     std::cout << "Error: Invalid input." << std::endl;

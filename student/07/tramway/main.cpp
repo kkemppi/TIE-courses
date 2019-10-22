@@ -1,3 +1,17 @@
+/*
+ * Name: Mikko Kemppi & Olli-Pekka Pettersson
+ * Student number: 272670 & 283651
+ * UserID: kemppim & pertterso
+ * E-Mail: mikko.kemppi@tuni.fi & olli.pettersson@tuni.fi
+ *
+ * Notes about the program and it's implementation:
+ * This program reads  a tramway's route from a given file, saves it to a
+ * suitable data structure, and gives the user a possibility to perform searches,
+ * additions and removals to this data structure. This program does not modify
+ * the source file.
+ * */
+
+
 #include <iostream>
 #include <fstream>
 #include <string>
@@ -21,7 +35,12 @@ void print_rasse()
                  "___(o)(o)___(o)(o)___(o)(o)____\n"
                  "-------------------------------" << std::endl;
 }
-
+/*
+ * params: string s, char delimiter
+ * return: vector<string> result
+ * function takes row as string and splits it by delimiters and puts all parts to vector
+ * if row contains word split to two e.g. "Hervannan Kampus" function takes everything between " " as one part
+ * */
 std::vector<std::string> split(const std::string& s, char delimiter = ';'){
     std::vector<std::string> result;
     std::string tmp = s;
@@ -61,6 +80,13 @@ std::vector<std::string> split(const std::string& s, char delimiter = ';'){
     return result;
 }
 
+/*
+ * params: map routes, string inp
+ * Function opens file with name inp and splits all rows to vectors with split function.
+ * From this vector the first part is used as key for std::map routes and
+ * remaining part is added as value for that key.
+ * Function doesn't return anything but adds values to map if values don't already exist
+ * */
 void routing(std::map<std::string, std::vector<std::string>>& route, std::string inp)
 {
     std::ifstream file(inp);
@@ -80,7 +106,7 @@ void routing(std::map<std::string, std::vector<std::string>>& route, std::string
 }
 
 
-// Check if station exists
+// Check if given station exists in any line
 bool is_Station(std::map<std::string, std::vector<std::string>>& routes, std::string stop)
 {
     std::map<std::string, std::vector<std::string>>::iterator iter = routes.begin();
@@ -94,6 +120,9 @@ bool is_Station(std::map<std::string, std::vector<std::string>>& routes, std::st
     return false;
 }
 
+
+// Prints all routes in alphabetical ASCII order. Adds all keys from map routes
+// to a vector and sorts it.
 void lines(std::map<std::string, std::vector<std::string>>& routes)
 {
     std::cout << "All tramlines in alphabetical order:" << std::endl;
@@ -109,6 +138,10 @@ void lines(std::map<std::string, std::vector<std::string>>& routes)
     }
 }
 
+
+// Prints all stations in the whole line network in an alphabetical ASCII order
+// Tries to add each station to a std::set<std::string> to not add duplicates,
+// then add all stations to a vector and sort and print it
 void stations(std::map<std::string, std::vector<std::string>>& routes)
 {
     std::cout << "All stations in alphabetical order:" << std::endl;
@@ -133,6 +166,11 @@ void stations(std::map<std::string, std::vector<std::string>>& routes)
     }
 }
 
+
+
+// Adds a new station "new_stop" before a given station "next_stop" to a given
+// line "route". Checks if the line can't be found or the station already exists.
+// If next_stop doesn't exist, adds the new_stop to the end of line.
 void addstation(std::map<std::string, std::vector<std::string>>& routes, std::string route, std::string new_stop, std::string next_stop = "")
 {
     if (routes.find(route) == routes.end()){
@@ -147,6 +185,9 @@ void addstation(std::map<std::string, std::vector<std::string>>& routes, std::st
     }
 }
 
+
+// Prints all stations in given line "route"
+// Checks if route exists
 void line(std::map<std::string, std::vector<std::string>>& routes, std::string route)
 {
     if (routes.find(route) == routes.end()){
@@ -159,6 +200,10 @@ void line(std::map<std::string, std::vector<std::string>>& routes, std::string r
     }
 }
 
+
+// Prints all routes that go trough a given station "stop" in alphabetical ASCII
+// order. Checks if stop exists. If stop is found under a key in map routes,
+// add this key to vector<string> stops and then sort this vector.
 void station(std::map<std::string, std::vector<std::string>>& routes, std::string stop)
 {
     if (!is_Station(routes, stop)){
@@ -169,7 +214,7 @@ void station(std::map<std::string, std::vector<std::string>>& routes, std::strin
         std::map<std::string, std::vector<std::string>>::iterator iter = routes.begin();
         while (iter != routes.end()){
             if (find(iter->second.begin(), iter->second.end(), stop) != iter->second.end()){
-                stops.push_back(iter -> first);
+                stops.push_back(iter->first);
             }
             ++iter;
         }
@@ -180,6 +225,8 @@ void station(std::map<std::string, std::vector<std::string>>& routes, std::strin
     }
 }
 
+
+// Adds a new line "route" to the data structure. Checks if line already exists.
 void addline(std::map<std::string, std::vector<std::string>>& routes, std::string route)
 {
     if(routes.find(route) == routes.end()){
@@ -192,6 +239,9 @@ void addline(std::map<std::string, std::vector<std::string>>& routes, std::strin
     }
 }
 
+
+// Removes a given station "stop" from all lines in the data structure. Checks
+// if stop exists.
 void remove(std::map<std::string, std::vector<std::string>>& routes, std::string stop)
 {
     if (!is_Station(routes, stop)){
@@ -209,7 +259,11 @@ void remove(std::map<std::string, std::vector<std::string>>& routes, std::string
 }
 
 
-// Short and sweet main.
+// Reads the given file and checks if it is in a viable format for this program.
+// Adds the contents of source file to std::map<std::string, std::vector<std::string>>
+// Displays the user interface for user and checks if inputs are viable. Runs
+// corresponding actions for each viable command. Exits program with input quit.
+// Inputs are case-insensitive.
 int main()
 {
     std::map<std::string, std::vector<std::string>> routes;

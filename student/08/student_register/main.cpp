@@ -88,6 +88,7 @@ void change_phone(std::string student_number, std::map<std::string, Student*> st
     std::string new_number;
     std::cout << "Enter a new phone number: ";
     std::getline(std::cin, new_number);
+    std::cout << std::endl;
     if (!is_valid_phone_number(new_number)){
         return;
     }else{

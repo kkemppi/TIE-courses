@@ -1,39 +1,22 @@
 #include "array_operations.hh"
 #include <algorithm>
+#include <iostream>
+#include <array>
 
 int greatest_v1(int* itemptr, int size)
 {
-    int* greatest = itemptr;
-    while (*itemptr < size){
-        if (*itemptr > *greatest){
-            greatest = itemptr;
-        }
-        itemptr++;
-    }
-    return *greatest;
+    return *std::max_element(itemptr, (itemptr + size));
 }
 
 int greatest_v2(int* itemptr, int* endptr)
 {
-    int* greatest = itemptr;
-    while (*itemptr < *endptr){
-        if (*itemptr > *greatest){
-            greatest = itemptr;
-        }
-        itemptr++;
-    }
-    return *greatest;
+    return *std::max_element(itemptr, endptr);
+
 }
 
 void copy(int* itemptr, int* endptr, int* targetptr)
 {
-    {
-        while (*itemptr < *endptr){
-            *targetptr = *itemptr;
-            itemptr++;
-            targetptr++;
-        }
-    }
+    std::copy(itemptr, endptr, targetptr);
 }
 
 void reverse(int* leftptr, int* rightptr)

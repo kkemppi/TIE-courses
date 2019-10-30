@@ -1,4 +1,5 @@
 #include "array_operations.hh"
+#include <algorithm>
 
 int greatest_v1(int* itemptr, int size)
 {
@@ -37,6 +38,6 @@ void copy(int* itemptr, int* endptr, int* targetptr)
 
 void reverse(int* leftptr, int* rightptr)
 {
-    reverse(leftptr, rightptr);
+    std::reverse(leftptr, rightptr);
 
 }

@@ -10,10 +10,13 @@ int main() {
 
     // Declaring an array with 30 elements, which begins with 4 non-zero values,
     // and the rest of the values are zero.
-    int array[ITEM_NUMBER] = { 1, 3, 6, 9 };
+    int array[ITEM_NUMBER] = { 1, 3, 6, 9};
+    array[29] = 5;
+    array[18] = 3;
+    array[12] = 18;
 
     // Example on how to apply algorithm library to a C array
-    sort(array, array + ITEM_NUMBER);
+//    sort(array, array + ITEM_NUMBER);
 
     for(int* position = array; position < array + ITEM_NUMBER; ++position){
         cout << *position << " ";

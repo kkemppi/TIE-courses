@@ -1,6 +1,4 @@
 #include "array_operations.hh"
-#include "algorithm"
-#include <bits/stdc++.h>
 
 int greatest_v1(int* itemptr, int size)
 {
@@ -39,6 +37,6 @@ void copy(int* itemptr, int* endptr, int* targetptr)
 
 void reverse(int* leftptr, int* rightptr)
 {
-    sort(leftptr, rightptr, std::greater<int>());
+    reverse(leftptr, rightptr);
 
 }

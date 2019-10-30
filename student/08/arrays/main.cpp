@@ -10,9 +10,9 @@ int main() {
 
     // Declaring an array with 30 elements, which begins with 4 non-zero values,
     // and the rest of the values are zero.
-    int array[ITEM_NUMBER] = { 1, 3, 5, 2};
-//    array[29] = 20;
-//    array[18] = 3;
+    int array[ITEM_NUMBER] = { 1, 3, 4, 5};
+    array[29] = 20;
+    array[18] = 21;
 //    array[12] = 18;
 
     // Example on how to apply algorithm library to a C array

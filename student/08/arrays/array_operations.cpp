@@ -3,26 +3,26 @@
 
 int greatest_v1(int* itemptr, int size)
 {
-    int greatest = 0;
+    int* greatest = itemptr;
     while (*itemptr < size){
-        if (*itemptr > greatest){
-            greatest = *itemptr;
+        if (*itemptr > *greatest){
+            greatest = itemptr;
         }
         itemptr++;
     }
-    return greatest;
+    return *greatest;
 }
 
 int greatest_v2(int* itemptr, int* endptr)
 {
-    int greatest = 0;
+    int* greatest = itemptr;
     while (*itemptr < *endptr){
-        if (*itemptr > greatest){
-            greatest = *itemptr;
+        if (*itemptr > *greatest){
+            greatest = itemptr;
         }
         itemptr++;
     }
-    return greatest;
+    return *greatest;
 }
 
 void copy(int* itemptr, int* endptr, int* targetptr)

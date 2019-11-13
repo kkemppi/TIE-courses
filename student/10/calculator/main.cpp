@@ -80,6 +80,7 @@ Command pick_command(string command) {
             return s;
         }
     }
+    return COMMANDS.at(0); // tää ettei tuu varotusta
 }
 
 bool is_int(std::string goal){

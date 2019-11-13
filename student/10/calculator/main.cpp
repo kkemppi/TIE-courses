@@ -130,7 +130,7 @@ int main() {
         if(pieces.size() == 0 ){
             continue;
         }
-        else if (pieces.size() > 3 || pieces.size() == 2){
+        else if (pieces.size() > 3 || pieces.size() <= 2){
             cout << "Error: wrong number of parameters." << endl;
             continue;
         }else if (!is_int(pieces.at(1)) || !is_int(pieces.at(2))){

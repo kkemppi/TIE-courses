@@ -117,7 +117,7 @@ int main() {
         string command_to_be_executed = pieces.at(0);
         transform(command_to_be_executed.begin(), command_to_be_executed.end(), command_to_be_executed.begin(), ::toupper);
         Command command = pick_command(command_to_be_executed);
-        if (command.exit == true){
+        if (command.exit == true && pieces.size() == 1){
             cout << "Thanks and see you later!" << endl;
             return EXIT_SUCCESS;
         }

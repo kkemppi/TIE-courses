@@ -146,10 +146,12 @@ bool Library::is_account(const std::string &borrower_id)
 
 void Library::loaned_books()
 {
-    std::cout << "Book title : Borrower : Due date : Is late" << std::endl;
-    for (Loan* item : loans_){
-        bool is_late = item->is_late(today_);
-        std::cout << item->get_book_title() << " : " << item->get_borrower() << " : " << item->get_due_date()->to_string() << " : " << is_late << std::endl;
+    if (loans_.size() != 0){
+        std::cout << "Book title : Borrower : Due date : Is late" << std::endl;
+        for (Loan* item : loans_){
+            bool is_late = item->is_late(today_);
+            std::cout << item->get_book_title() << " : " << item->get_borrower() << " : " << item->get_due_date()->to_string() << " : " << is_late << std::endl;
+        }
     }
 }
 
@@ -189,11 +191,20 @@ void Library::loan(const std::string &book_title, const std::string &borrower_id
 
 void Library::renew_loan(const std::string &book_title)
 {
-    for (Loan* item : loans_){
-        if (item->get_book_title() == book_title){
-            item->renew();
+
+    if(!is_loaned_[book_title]){
+        std::cout << LOAN_NOT_FOUND_ERROR << std::endl;
+    }
+    else if(!is_book(book_title)){
+        std::cout << CANT_FIND_BOOK_ERROR << std::endl;
+    }else{
+        for (Loan* item : loans_){
+            if (item->get_book_title() == book_title){
+                item->renew();
+            }
         }
     }
+
 }
 
 void Library::return_loan(const std::string &book_title)
@@ -215,8 +226,9 @@ void Library::return_loan(const std::string &book_title)
             }else{
                 i++;
             }
+
         }
-        //Tähän Loan poisto. delete to be deleted ja nulpointer asetus. poisto vektorista
     }
+    std::cout << RETURN_SUCCESSFUL << std::endl;
 }
 

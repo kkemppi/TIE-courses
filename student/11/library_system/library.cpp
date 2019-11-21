@@ -192,11 +192,11 @@ void Library::loan(const std::string &book_title, const std::string &borrower_id
 void Library::renew_loan(const std::string &book_title)
 {
 
-    if(!is_loaned_[book_title]){
-        std::cout << LOAN_NOT_FOUND_ERROR << std::endl;
-    }
-    else if(!is_book(book_title)){
+    if(!is_book(book_title)){
         std::cout << CANT_FIND_BOOK_ERROR << std::endl;
+    }
+    else if(!is_loaned_[book_title]){
+            std::cout << LOAN_NOT_FOUND_ERROR << std::endl;
     }else{
         for (Loan* item : loans_){
             if (item->get_book_title() == book_title){
@@ -204,7 +204,6 @@ void Library::renew_loan(const std::string &book_title)
             }
         }
     }
-
 }
 
 void Library::return_loan(const std::string &book_title)

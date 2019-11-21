@@ -228,7 +228,8 @@ void Library::return_loan(const std::string &book_title)
             }
 
         }
+        std::cout << RETURN_SUCCESSFUL << std::endl;
     }
-    std::cout << RETURN_SUCCESSFUL << std::endl;
+
 }
 

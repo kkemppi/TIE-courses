@@ -22,8 +22,8 @@ public:
     Loan(Date* due_date,
          Person* borrower_id,
          Book* book_title,
-         int renew_count = 0,
-         bool is_late = false);
+         int renew_count = 0
+         );
     ~Loan();
 
 void renew();
@@ -36,13 +36,15 @@ std::string get_borrower();
 
 std::string get_book_title();
 
+bool is_late(Date* today);
+
 private:
 
     Date* due_date_;
     Person* borrower_id_;
     Book* book_title_;
     int renew_count_;
-    bool is_late_;
+
 
 };
 

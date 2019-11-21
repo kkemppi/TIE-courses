@@ -1,6 +1,7 @@
 #include "library.hh"
 #include "loan.hh"
 #include <iostream>
+#include <algorithm>
 
 // Let's use the date when the project was published as the first date.
 Library::Library():
@@ -147,7 +148,7 @@ void Library::loaned_books()
 {
     std::cout << "Book title : Borrower : Due date : Is late" << std::endl;
     for (Loan* item : loans_){
-        bool is_late = item->get_due_date() < today_;
+        bool is_late = item->is_late(today_);
         std::cout << item->get_book_title() << " : " << item->get_borrower() << " : " << item->get_due_date()->to_string() << " : " << is_late << std::endl;
     }
 }
@@ -157,9 +158,9 @@ void Library::loans_by(const std::string &borrower)
     if(!is_account(borrower)){
         std::cout << CANT_FIND_ACCOUNT_ERROR << std::endl;
     }else{
-        for (auto item : loans_){
+        for (Loan* item : loans_){
             if (item->get_borrower() == borrower){
-                bool is_late = item->get_due_date() < today_;
+                bool is_late = item->is_late(today_);
                 std::cout << item->get_book_title() <<  " : " << item->get_due_date()->to_string() << " : " << is_late << std::endl;
             }
     }
@@ -178,8 +179,8 @@ void Library::loan(const std::string &book_title, const std::string &borrower_id
     else if(!is_book(book_title)){
         std::cout << CANT_FIND_BOOK_ERROR << std::endl;
     }else{
-        Date* due = new Date(today_->getDay(), today_->getMonth(), today_->getYear());
-        Loan* n_loan = new Loan(due, accounts_[borrower_id], books_[book_title]);
+
+        Loan* n_loan = new Loan(today_, accounts_[borrower_id], books_[book_title]);
         loans_.push_back(n_loan);
         is_loaned_[book_title] = true;
     }
@@ -203,7 +204,19 @@ void Library::return_loan(const std::string &book_title)
     else if (!is_loaned_[book_title]){
         std::cout << LOAN_NOT_FOUND_ERROR << std::endl;
     }else{
-        //Tähän Loan ja Date poisto
+        int i = 0;
+        for (Loan* item : loans_){
+            if (item->get_book_title() == book_title){
+                Loan* to_be_removed = item;
+                loans_.erase(loans_.begin()+i);
+                delete to_be_removed;
+                to_be_removed = nullptr;
+                is_loaned_[book_title] = false;
+            }else{
+                i++;
+            }
+        }
+        //Tähän Loan poisto. delete to be deleted ja nulpointer asetus. poisto vektorista
     }
 }
 

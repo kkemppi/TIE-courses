@@ -189,7 +189,7 @@ void Library::loan(const std::string &book_title, const std::string &borrower_id
 
 void Library::renew_loan(const std::string &book_title)
 {
-    for (auto item : loans_){
+    for (Loan* item : loans_){
         if (item->get_book_title() == book_title){
             item->renew();
         }

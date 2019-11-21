@@ -57,11 +57,13 @@ std::string Loan::get_book_title()
 
 bool Loan::is_late(Date* today)
 {
-    return (due_date_ < today);
+    if (*due_date_ < *today){
+        return true;
+    }
+    else{
+        return false;
+    }
+
 }
 
-// lib.get_today()->to_string()
 
-//Date* due_date;
-//std::string borrower_id_;
-//std::string book_title_;

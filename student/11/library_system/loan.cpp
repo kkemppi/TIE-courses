@@ -9,8 +9,8 @@
 #include <utility>
 Library lib;
 
-Loan::Loan(Date* due_date, std::string borrower_id,
-           std::string book_title, int renew_count, bool is_late):
+Loan::Loan(Date* due_date, Person *borrower_id,
+           Book *book_title, int renew_count, bool is_late):
     due_date_(due_date),
     borrower_id_(borrower_id),
     book_title_(book_title),
@@ -45,12 +45,12 @@ Date* Loan::get_due_date()
 
 std::string Loan::get_borrower()
 {
-    return borrower_id_;
+    return borrower_id_->get_name();
 }
 
 std::string Loan::get_book_title()
 {
-    return book_title_;
+    return book_title_->get_title();
 }
 
 

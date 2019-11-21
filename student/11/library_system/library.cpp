@@ -179,7 +179,7 @@ void Library::loan(const std::string &book_title, const std::string &borrower_id
         std::cout << CANT_FIND_BOOK_ERROR << std::endl;
     }else{
         Date* due = new Date(today_->getDay(), today_->getMonth(), today_->getYear());
-        Loan* n_loan = new Loan(due, borrower_id, book_title);
+        Loan* n_loan = new Loan(due, accounts_[borrower_id], books_[book_title]);
         loans_.push_back(n_loan);
         is_loaned_[book_title] = true;
     }

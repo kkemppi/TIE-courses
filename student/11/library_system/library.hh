@@ -106,7 +106,7 @@ public:
 
 
 private:
-    std::vector<Loan*> loans_;
+
     // Today's date.
     Date* today_;
     // All books in the library system.
@@ -115,7 +115,7 @@ private:
     std::map<std::string, Person*> authors_;
     // All accounts of borrowers.
     std::map<std::string, Person*> accounts_;
-
+    std::vector<Loan*> loans_;
     std::map<std::string, bool> is_loaned_;
 
 

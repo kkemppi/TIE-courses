@@ -1,15 +1,17 @@
 /* Module: Loan
  * ------------
- * This class and its bahaviour should be defined by the student.
+ * Class of a single loan instance. Contains the loaned date, book title and
+ * borrower id. Borrower and book title are stored as pointers to original book
+ * and person object. Date is a new object unique to this class.
  *
- * TIE-0220x S2019
+ * TIE-02207 S2019
  * */
-#include <string>
-#include <map>
-#include <utility>
 #include "date.hh"
 #include "person.hh"
 #include "library.hh"
+#include <string>
+#include <map>
+#include <utility>
 #ifndef LOAN_HH
 #define LOAN_HH
 
@@ -22,27 +24,28 @@ public:
     Loan(Date* due_date,
          Person* borrower_id,
          Book* book_title,
-         int renew_count = 0
-         );
+         int renew_count = 0);
     ~Loan();
 
+// Extends loan due date by set amount of days. Checks if too many renewals
+// have been made
 void renew();
 
+// Get methods
 Date* get_due_date();
-
-bool get_late();
-
 std::string get_borrower();
-
 std::string get_book_title();
 
+// Checks if loan is late compared to given Date
 bool is_late(Date* today);
 
 private:
 
+    // Pointers to date, borrower and loaned book
     Date* due_date_;
     Person* borrower_id_;
     Book* book_title_;
+    // Amount of renewals that have been made
     int renew_count_;
 
 

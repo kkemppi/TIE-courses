@@ -1,13 +1,16 @@
 /* Module: Library
  * ---------------
  * Library system that can be used to look at books and borrower accounts.
- * Students should expand this system to handle book loaning as well.
  * ---------------
  *
  *
  * (Add your info ( name, email, student number) and a short
  * description / comment of your solution here.)
  *
+ * Mikko Kemppi, mikko.kemppi@tuni.fi, 272670
+ * Solution is based on saving Loan type objects to a vector, and then
+ * manipulating this vector. Another map with book names and truth values is
+ * used to make checking loan statuses easier.
  *
  * ---------------
  * TIE-0220x S2019
@@ -23,8 +26,6 @@
 #include <map>
 
 // Forward declaration of Person class.
-// If this concept feels odd, there's a short bit of material of it
-// in PLUS 4.5: the waterdrop game.
 class Person;
 
 // All error messages.
@@ -70,36 +71,37 @@ public:
     void set_date(int day, int month, int year);
     // Advances today's date by param days.
     void advance_date(int days);
-
+    // Returns current date
     Date *get_today();
-
+    // Checks if book exists
     bool is_book(const std::string &book_title);
-
+    // Checks if person exists
     bool is_account(const std::string &borrower_id);
 
 
-    // Student's should complete the following functions:
-
-    // Should print LOAN_INFO and all loaned books in the format described.
+    // Prints LOAN_INFO and all loaned books in the format described.
     // If there's no loans, prints nothing.
     void loaned_books();
 
-    // Should print all books loaned by borrower in
+    // Prints all books loaned by borrower in
     // the format: " title : due date : is late "
     // If borrower can't be found, prints an appropriate error.
     void loans_by(const std::string& borrower);
 
     // Loans a book with title and sets the borrower as borrower_id.
+    // Adds a filled Loan object to a vector.
     // If book/borrower can't be found, or book is already loaned, prints
     // an appropriate error.
     void loan(const std::string &book_title, const std::string& borrower_id);
 
     // Renews the loan if there's renewals remaining.
     // Prints RENEWAL_SUCCESSFUL or if any error happened, an appropriate error.
+    // Prints the new due date
     void renew_loan(const std::string& book_title);
 
     // Returns a loan. If no errors occured, prints RETURN_SUCCESSFUL.
     // If any error happened, prints an appropriate error message.
+    // Frees all memory used by Loan object
     void return_loan(const std::string& book_title);
 
 
@@ -115,15 +117,11 @@ private:
     std::map<std::string, Person*> authors_;
     // All accounts of borrowers.
     std::map<std::string, Person*> accounts_;
+    // All singular loan entities
     std::vector<Loan*> loans_;
+    // All books and their loan status
     std::map<std::string, bool> is_loaned_;
 
-
-
-
-
-
-    // Students may add things here and initialize them properly.
 
 };
 

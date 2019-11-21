@@ -7,7 +7,6 @@
 #include <iostream>
 #include <memory>
 #include <utility>
-Library lib;
 
 Loan::Loan(Date* today, Person *borrower_id,
            Book *book_title, int renew_count):
@@ -18,6 +17,7 @@ Loan::Loan(Date* today, Person *borrower_id,
 
 
 {
+    // Due date was current date, move it forvard
     due_date_->advance_by_loan_length();
 }
 
@@ -42,7 +42,6 @@ Date* Loan::get_due_date()
 {
     return due_date_;
 }
-
 
 
 std::string Loan::get_borrower()

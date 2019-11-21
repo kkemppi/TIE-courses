@@ -181,7 +181,6 @@ void Library::loan(const std::string &book_title, const std::string &borrower_id
     else if(!is_book(book_title)){
         std::cout << CANT_FIND_BOOK_ERROR << std::endl;
     }else{
-
         Loan* n_loan = new Loan(today_, accounts_[borrower_id], books_[book_title]);
         loans_.push_back(n_loan);
         is_loaned_[book_title] = true;
@@ -214,7 +213,7 @@ void Library::return_loan(const std::string &book_title)
     else if (!is_loaned_[book_title]){
         std::cout << LOAN_NOT_FOUND_ERROR << std::endl;
     }else{
-        int i = 0;
+        int i = 0; // Keep i as the index of Loan to be removed
         for (Loan* item : loans_){
             if (item->get_book_title() == book_title){
                 Loan* to_be_removed = item;

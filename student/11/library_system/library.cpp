@@ -119,6 +119,30 @@ Date* Library::get_today()
     return today_;
 }
 
+bool Library::is_book(const std::string &book_title)
+{
+    std::map<std::string, Book*>::iterator iter = books_.begin();
+    while (iter != books_.end()){
+        if (iter->first == book_title){
+            return true;
+        }else{
+            iter++;
+        }
+    }return false;
+}
+
+bool Library::is_account(const std::string &borrower_id)
+{
+    std::map<std::string, Person*>::iterator iter = accounts_.begin();
+    while (iter != accounts_.end()){
+        if (iter->first == borrower_id){
+            return true;
+        }else{
+            iter++;
+        }
+    }return false;
+}
+
 void Library::loaned_books()
 {
     std::cout << "Book title : Borrower : Due date : Is late" << std::endl;
@@ -130,13 +154,29 @@ void Library::loaned_books()
 
 void Library::loans_by(const std::string &borrower)
 {
+    if(!is_account(borrower)){
+        std::cout << CANT_FIND_ACCOUNT_ERROR << std::endl;
+    }else{
+        for (auto item : loans_){
+            if (item->get_borrower() == borrower){
+                bool is_late = item->get_due_date() < today_;
+                std::cout << item->get_book_title() <<  " : " << item->get_due_date()->to_string() << " : " << is_late << std::endl;
+            }
+    }
 
+    }
 }
 
 void Library::loan(const std::string &book_title, const std::string &borrower_id)
 {
     if (is_loaned_[book_title]){
         std::cout << ALREADY_LOANED_ERROR << std::endl;
+    }
+    else if(!is_account(borrower_id)){
+        std::cout << CANT_FIND_ACCOUNT_ERROR << std::endl;
+    }
+    else if(!is_book(book_title)){
+        std::cout << CANT_FIND_BOOK_ERROR << std::endl;
     }else{
         Date* due = new Date(today_->getDay(), today_->getMonth(), today_->getYear());
         Loan* n_loan = new Loan(due, borrower_id, book_title);
@@ -157,6 +197,13 @@ void Library::renew_loan(const std::string &book_title)
 
 void Library::return_loan(const std::string &book_title)
 {
-
+    if(!is_book(book_title)){
+        std::cout << CANT_FIND_BOOK_ERROR << std::endl;
+    }
+    else if (!is_loaned_[book_title]){
+        std::cout << LOAN_NOT_FOUND_ERROR << std::endl;
+    }else{
+        //Tähän Loan ja Date poisto
+    }
 }
 

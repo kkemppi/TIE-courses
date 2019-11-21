@@ -73,7 +73,9 @@ public:
 
     Date *get_today();
 
+    bool is_book(const std::string &book_title);
 
+    bool is_account(const std::string &borrower_id);
 
 
     // Student's should complete the following functions:
@@ -104,6 +106,7 @@ public:
 
 
 private:
+    std::vector<Loan*> loans_;
     // Today's date.
     Date* today_;
     // All books in the library system.
@@ -115,7 +118,7 @@ private:
 
     std::map<std::string, bool> is_loaned_;
 
-    std::vector<Loan*> loans_;
+
 
 
 

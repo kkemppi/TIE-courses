@@ -27,7 +27,7 @@ void MainWindow::on_findPushButton_clicked()
     else if (QFile::exists(ui->fileLineEdit->text())){
         QFile file(ui->fileLineEdit->text());
         file.open(QIODevice::ReadWrite);
-        if (ui->checkBox->isChecked()){
+        if (ui->matchCheckBox->isChecked()){
             if(ui->keyLineEdit->text().isEmpty()){
                 ui->textBrowser->setText(FILE_FOUND);
             }else{

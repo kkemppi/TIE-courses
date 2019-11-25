@@ -16,11 +16,9 @@ public:
     ~MainWindow();
 
 private slots:
-    void on_fileLineEdit_editingFinished();
+
 
     void on_findPushButton_clicked();
-
-    void on_keyLineEdit_editingFinished();
 
 private:
     Ui::MainWindow *ui;

@@ -2,11 +2,12 @@
 #include "ui_mainwindow.h"
 #include <string>
 #include <QFile>
-#include <QDebug>
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
+//    QString (filu),
+//    QString (key)
 {
     ui->setupUi(this);
 
@@ -19,17 +20,12 @@ MainWindow::~MainWindow()
 
 void MainWindow::on_fileLineEdit_editingFinished()
 {
-    QString file_to_be_found = ui->fileLineEdit->text();
+    QString filu = ui->fileLineEdit->text();
 }
 
 
 void MainWindow::on_findPushButton_clicked()
 {
-    const QString FILE_NOT_FOUND = "File not found";
-    const QString FILE_FOUND = "File found";
-    const QString WORD_NOT_FOUND ="Word not found";
-    const QString WORD_FOUND = "Word found";
-    qDebug() << QFile::exists(ui->fileLineEdit->text());
     if(!QFile::exists(ui->fileLineEdit->text())){
         ui->textBrowser->setText(FILE_NOT_FOUND);
     }
@@ -79,5 +75,5 @@ void MainWindow::on_findPushButton_clicked()
 
 void MainWindow::on_keyLineEdit_editingFinished()
 {
-    QString text_to_be_found = ui->keyLineEdit->text();
+    QString key = ui->keyLineEdit->text();
 }

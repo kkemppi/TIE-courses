@@ -160,5 +160,37 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>fileLineEdit</sender>
+   <signal>editingFinished()</signal>
+   <receiver>findPushButton</receiver>
+   <slot>setFocus()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>169</x>
+     <y>72</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>287</x>
+     <y>76</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>keyLineEdit</sender>
+   <signal>editingFinished()</signal>
+   <receiver>findPushButton</receiver>
+   <slot>setFocus()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>191</x>
+     <y>113</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>284</x>
+     <y>73</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
 </ui>

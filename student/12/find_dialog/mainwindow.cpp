@@ -37,40 +37,34 @@ void MainWindow::on_findPushButton_clicked()
             if(ui->keyLineEdit->text().isEmpty()){
                 ui->textBrowser->setText(FILE_FOUND);
             }else{
+                QTextStream in(&file);
                 QString searchString(ui->keyLineEdit->text());
-                QTextStream in (&file);
-                QString line;
-                do {
-                    line = in.readLine();
-                    if(line.contains(searchString, Qt::CaseSensitive)){
-                        ui->textBrowser->setText(WORD_FOUND);
-                        break;
-                    }
-                } while (!line.isNull());
-                if (line.isNull()){
-                                ui->textBrowser->setText(WORD_NOT_FOUND);
+                while (!in.atEnd()) {
+                        QString line = in.readLine();
+                        if (line.contains(searchString, Qt::CaseSensitive)){
+                            ui->textBrowser->setText(WORD_FOUND);
+                            return;
+                        }
                 }
+                ui->textBrowser->setText(WORD_NOT_FOUND);
             }
         }else{
             if(ui->keyLineEdit->text().isEmpty()){
                 ui->textBrowser->setText(FILE_FOUND);
             }else{
+                QTextStream in(&file);
                 QString searchString(ui->keyLineEdit->text());
-                QTextStream in (&file);
-                QString line;
-                do {
-                    line = in.readLine();
-                    if(line.contains(searchString, Qt::CaseInsensitive)){
-                        ui->textBrowser->setText(WORD_FOUND);
-                        break;
-                    }
-                } while (!line.isNull());
-                if (line.isNull()){
-                                ui->textBrowser->setText(WORD_NOT_FOUND);
+                while (!in.atEnd()) {
+                        QString line = in.readLine();
+                        if (line.contains(searchString, Qt::CaseInsensitive)){
+                            ui->textBrowser->setText(WORD_FOUND);
+                            return;
+                        }
                 }
-            file.close();
+            ui->textBrowser->setText(WORD_NOT_FOUND);
             }
         }
+    file.close();
     }
 }
 

@@ -19,12 +19,6 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
-void MainWindow::on_fileLineEdit_editingFinished()
-{
-    QString filu = ui->fileLineEdit->text();
-}
-
-
 void MainWindow::on_findPushButton_clicked()
 {
     if(!QFile::exists(ui->fileLineEdit->text())){
@@ -68,7 +62,4 @@ void MainWindow::on_findPushButton_clicked()
     }
 }
 
-void MainWindow::on_keyLineEdit_editingFinished()
-{
-    QString key = ui->keyLineEdit->text();
-}
+

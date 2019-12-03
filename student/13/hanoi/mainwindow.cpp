@@ -4,6 +4,8 @@
 #include <QKeyEvent>
 #include <QGraphicsRectItem>
 #include <QMainWindow>
+#include <QLabel>
+#include <QString>
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -23,6 +25,12 @@ MainWindow::MainWindow(QWidget *parent) :
     ui_->graphicsView->setScene(scene_);
     scene_->setSceneRect(0, 0, BORDER_RIGHT - 1, BORDER_DOWN - 1);
 
+    a.setX(LEFT_POLE);
+    b.setX(MIDDLE_POLE);
+    c.setX(RIGHT_POLE);
+
+
+
     QBrush redBrush(Qt::red);
     QBrush blueBrush(Qt::blue);
     QBrush greenBrush(Qt::green);
@@ -31,20 +39,15 @@ MainWindow::MainWindow(QWidget *parent) :
     if (user_defined_n){
         // Implementation for custom n
     }
-    a.setX(BORDER_RIGHT / 4);
     int i = 0;
     while(i<=n){
-//        int width = MAX_WIDTH-(i*DECREASE_INCEREMENT);
-//        rect = scene_->addRect(LEFT_POLE-(width/2)-GAP, BORDER_DOWN-(i*DISC_HEIGHT), width, DISC_HEIGHT, blackPen, redBrush);
-//        ++i;
-//        pole_a.push_back(rect_);
-
         int width = MAX_WIDTH-(i*DECREASE_INCEREMENT);
-        rect = scene_->addRect(a.x(), BORDER_DOWN-(i*DISC_HEIGHT), width, DISC_HEIGHT, blackPen, redBrush);
-        rect->centerOn(a.x());)
+        rect_ = scene_->addRect(LEFT_POLE+(i*(DECREASE_INCEREMENT)/2), BORDER_DOWN-(i*DISC_HEIGHT), width, DISC_HEIGHT, blackPen, redBrush);
         ++i;
-        pole_a.push_back(rect);
+        pole_a.push_back(rect_);
     }
+
+//    scene_->addRect(b.x()-(pole_a.at(5)->, BORDER_DOWN, ))
 
 }
 
@@ -53,8 +56,22 @@ MainWindow::~MainWindow()
     delete ui_;
 }
 
-void MainWindow::on_pushButton_ab_clicked()
+
+void MainWindow::move_disc(std::vector<QGraphicsRectItem *>, std::vector<QGraphicsRectItem *>)
 {
-//    *rect = pole_a.at(pole_a.end()-1);
-//    rect->setRect();
+
+}
+
+void MainWindow::on_push_button_ab_clicked()
+{
+
+    pole_b.push_back(pole_a.at(pole_a.size()-1));
+    qreal deltaX = static_cast<qreal>(POLE_GAP);
+//    qreal deltaY = static_cast<qreal>();
+    pole_b.at(pole_b.size()-1)->moveBy(deltaX, 0);
+
+    pole_a.pop_back();
+
+//    pole_b.at(0)->y() = BORDER_DOWN;
+
 }

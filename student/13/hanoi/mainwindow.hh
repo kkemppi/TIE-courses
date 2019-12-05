@@ -21,10 +21,16 @@ public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
     bool user_defined_n = false;
-    int n = 6;
-    std::vector<QGraphicsRectItem*> pole_a;
-    std::vector<QGraphicsRectItem*> pole_b;
-    std::vector<QGraphicsRectItem*> pole_c;
+    int n = 2;
+
+    struct Disc{
+        QGraphicsRectItem* disc;
+        int width;
+    };
+
+    std::vector<Disc> pole_a;
+    std::vector<Disc> pole_b;
+    std::vector<Disc> pole_c;
 
     QLabel* history;
 
@@ -35,11 +41,13 @@ public:
 
 
 private slots:
-    void move_disc(std::vector<QGraphicsRectItem *> &start, std::vector<QGraphicsRectItem *> &end, int dir, int dist);
+    void move_disc(std::vector<Disc> &start, std::vector<Disc> &end, int dir, int dist);
+
+    void update();
 
     void on_push_button_ab_clicked();
-    void on_push_button_ba_clicked();
 
+    void on_push_button_ba_clicked();
 
     void on_push_button_ac_clicked();
 
@@ -49,12 +57,21 @@ private slots:
 
     void on_push_button_cb_clicked();
 
+    void check_win();
+
+    void check_poles();
+
+    bool is_possible(std::vector<Disc> &start, std::vector<Disc> &end);
+
+
 private:
     Ui::MainWindow *ui_;
 
     QGraphicsScene* scene_;         // a surface for drawing the game
     QGraphicsRectItem* rect_;       // drawing a rectangle
-    QTimer timer_;
+    QTimer* timer_;
+
+
 
 
     const int DEFAULT_DISCS = 6;

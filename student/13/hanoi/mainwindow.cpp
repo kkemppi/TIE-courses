@@ -85,7 +85,9 @@ void MainWindow::move_disc(std::vector<Disc>& start, std::vector<Disc>& end, int
     end.push_back(start.at((start.size()-1)));
     start.pop_back();
     end.at(end.size()-1).disc->setBrush(color);
-    check_poles();
+    if (!autoplay_timer_->isActive()){
+        check_poles();
+    }
     move_counter++;
     ui_->label_move_counter->setText(QString::number(move_counter));
     check_win();
@@ -155,6 +157,8 @@ void MainWindow::check_win()
         ui_->lcd_number_minutes->setPalette(Qt::red);
         ui_->lcd_number_seconds->setPalette(Qt::red);
         ui_->label_timer->setText("Final time");
+        ui_->label_win->setText("You win!");
+        ui_->label_win->setStyleSheet("QLabel {background-color : green; color : white;}");
     }
 }
 
@@ -220,29 +224,83 @@ void MainWindow::on_push_button_autoplay_clicked()
 {
     autoplay_timer_->start(1000);
     timer_->start(100);
-
-
+    ui_->push_button_ab->setDisabled(true);
+    ui_->push_button_ac->setDisabled(true);
+    ui_->push_button_ba->setDisabled(true);
+    ui_->push_button_bc->setDisabled(true);
+    ui_->push_button_ca->setDisabled(true);
+    ui_->push_button_cb->setDisabled(true);
+    ui_->push_button_autoplay->setDisabled(true);
 }
 
 void MainWindow::autoplay()
 {
-
-    if (is_possible(pole_a, pole_b)){
-        move_disc(pole_a, pole_b, 1, 1, Qt::green);
-    }else{
-        move_disc(pole_b, pole_a, -1, 1, Qt::red);
+    if(autoplay_counter==0){
+        if (is_possible(pole_a, pole_b)){
+            move_disc(pole_a, pole_b, 1, 1, Qt::green);
+            autoplay_counter++;
+        }else{
+            move_disc(pole_b, pole_a, -1, 1, Qt::red);
+            autoplay_counter++;
+        }
     }
-
-    if (is_possible(pole_a, pole_c)){
-        move_disc(pole_a, pole_c, 1, 2, Qt::blue);
-    }else{
-        move_disc(pole_c, pole_a, -1, 2, Qt::red);
+    else if(autoplay_counter==1){
+        if (is_possible(pole_a, pole_c)){
+            move_disc(pole_a, pole_c, 1, 2, Qt::blue);
+            autoplay_counter++;
+        }else{
+            move_disc(pole_c, pole_a, -1, 2, Qt::red);
+            autoplay_counter++;
+        }
     }
-
-    if (is_possible(pole_b, pole_c)){
-        move_disc(pole_b, pole_c, 1, 1, Qt::blue);
-    }else{
-        move_disc(pole_c, pole_b, -1, 1, Qt::green);
+    else if(autoplay_counter==2){
+        if (is_possible(pole_b, pole_c)){
+            move_disc(pole_b, pole_c, 1, 1, Qt::blue);
+            autoplay_counter = 0;
+        }else{
+            move_disc(pole_c, pole_b, -1, 1, Qt::green);
+            autoplay_counter = 0;
+        }
     }
+}
 
+void MainWindow::keyPressEvent(QKeyEvent* event) {
+
+    if(event->key() == Qt::Key_Q) {
+        if (is_possible(pole_a, pole_b)){
+            on_push_button_ab_clicked();
+        }
+    }
+    if(event->key() == Qt::Key_W) {
+        if (is_possible(pole_a, pole_c)){
+            on_push_button_ac_clicked();
+        }
+    }
+    if(event->key() == Qt::Key_E) {
+        if (is_possible(pole_b, pole_a)){
+            on_push_button_ba_clicked();
+        }
+    }
+    if(event->key() == Qt::Key_R) {
+        if (is_possible(pole_b, pole_c)){
+            on_push_button_bc_clicked();
+        }
+    }
+    if(event->key() == Qt::Key_T) {
+        if (is_possible(pole_c, pole_a)){
+            on_push_button_ca_clicked();
+        }
+    }
+    if(event->key() == Qt::Key_Y) {
+        if (is_possible(pole_c, pole_b)){
+            on_push_button_ca_clicked();
+        }
+    }
+}
+
+void MainWindow::on_push_button_stop_autoplay_clicked()
+{
+    autoplay_timer_->stop();
+    check_poles();
+    ui_->push_button_stop_autoplay->setDisabled(true);
 }

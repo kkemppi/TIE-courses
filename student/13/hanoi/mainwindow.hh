@@ -20,11 +20,13 @@ class MainWindow : public QMainWindow
 public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
+    void keyPressEvent(QKeyEvent* event) override;
 
     // Set number of discs here
-    int n = 2;
+    int n = 6;
 
     int move_counter;
+    int autoplay_counter;
 
     struct Disc{
         QGraphicsRectItem* disc;
@@ -68,6 +70,8 @@ private slots:
     void on_push_button_autoplay_clicked();
 
     void autoplay();
+
+    void on_push_button_stop_autoplay_clicked();
 
 private:
     Ui::MainWindow *ui_;

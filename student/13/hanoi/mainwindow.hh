@@ -21,7 +21,9 @@ public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
     bool user_defined_n = false;
-    int n = 2;
+    int n = 6;
+
+    int move_counter;
 
     struct Disc{
         QGraphicsRectItem* disc;
@@ -41,7 +43,7 @@ public:
 
 
 private slots:
-    void move_disc(std::vector<Disc> &start, std::vector<Disc> &end, int dir, int dist);
+    void move_disc(std::vector<Disc> &start, std::vector<Disc> &end, int dir, int dist, QBrush color);
 
     void update();
 
@@ -63,6 +65,9 @@ private slots:
 
     bool is_possible(std::vector<Disc> &start, std::vector<Disc> &end);
 
+    void on_push_button_autoplay_clicked();
+
+    void autoplay();
 
 private:
     Ui::MainWindow *ui_;
@@ -70,6 +75,7 @@ private:
     QGraphicsScene* scene_;         // a surface for drawing the game
     QGraphicsRectItem* rect_;       // drawing a rectangle
     QTimer* timer_;
+    QTimer* autoplay_timer_;
 
 
 
@@ -93,6 +99,10 @@ private:
     QPoint b;
     QPoint c;
 
+    QBrush redBrush;
+    QBrush blueBrush;
+    QBrush greenBrush;
+    QPen blackPen;
 
 };
 

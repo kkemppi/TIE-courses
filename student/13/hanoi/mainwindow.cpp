@@ -18,9 +18,10 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     ui_->setupUi(this);
     timer_ = new QTimer(this);
+    autoplay_timer_ = new QTimer(this);
     connect(timer_, &QTimer::timeout, this, &MainWindow::update);
+    connect(autoplay_timer_, &QTimer::timeout, this, &MainWindow::autoplay);
     scene_ = new QGraphicsScene(this);
-
 
 
     int left_margin = 10; // x coordinate
@@ -51,6 +52,8 @@ MainWindow::MainWindow(QWidget *parent) :
     scene_->addRect(LEFT_POLE+(MAX_WIDTH/2)-(MIN_WIDTH-5), BORDER_UP, MIN_WIDTH-5, BORDER_DOWN, blackPen, redBrush);
     scene_->addRect(MIDDLE_POLE+(MAX_WIDTH/2)-(MIN_WIDTH-5), BORDER_UP, MIN_WIDTH-5, BORDER_DOWN, blackPen, greenBrush);
     scene_->addRect(RIGHT_POLE+(MAX_WIDTH/2)-(MIN_WIDTH-5), BORDER_UP, MIN_WIDTH-5, BORDER_DOWN, blackPen, blueBrush);
+    ui_->lcd_number_minutes->setPalette(Qt::green);
+    ui_->lcd_number_seconds->setPalette(Qt::blue);
     check_poles();
 
 
@@ -63,7 +66,7 @@ MainWindow::~MainWindow()
 }
 
 
-void MainWindow::move_disc(std::vector<Disc>& start, std::vector<Disc>& end, int dir, int dist = 1)
+void MainWindow::move_disc(std::vector<Disc>& start, std::vector<Disc>& end, int dir, int dist, QBrush color = Qt::red)
 {
     if (start.size() > end.size()){
         qreal y_offset = (start.size()*DISC_HEIGHT)-(end.size()*DISC_HEIGHT);
@@ -79,9 +82,11 @@ void MainWindow::move_disc(std::vector<Disc>& start, std::vector<Disc>& end, int
 
     end.push_back(start.at((start.size()-1)));
     start.pop_back();
+    end.at(end.size()-1).disc->setBrush(color);
     check_poles();
+    move_counter++;
+    ui_->label_move_counter->setText(QString::number(move_counter));
     check_win();
-
 }
 
 void MainWindow::update()
@@ -99,7 +104,8 @@ void MainWindow::on_push_button_ab_clicked()
     if (!(timer_->isActive())){
         timer_->start(1000);
     }
-    move_disc(pole_a, pole_b, 1);
+    move_disc(pole_a, pole_b, 1, 1, Qt::green);
+
 }
 
 
@@ -108,28 +114,28 @@ void MainWindow::on_push_button_ac_clicked()
     if (!(timer_->isActive())){
         timer_->start(1000);
     }
-    move_disc(pole_a, pole_c, 1, 2);
+    move_disc(pole_a, pole_c, 1, 2, Qt::blue);
 }
 
 void MainWindow::on_push_button_ba_clicked()
 {
-    move_disc(pole_b, pole_a, -1);
+    move_disc(pole_b, pole_a, -1, 1, Qt::red);
 }
 
 
 void MainWindow::on_push_button_bc_clicked()
 {
-    move_disc(pole_b, pole_c, 1);
+    move_disc(pole_b, pole_c, 1, 1 , Qt::blue);
 }
 
 void MainWindow::on_push_button_ca_clicked()
 {
-    move_disc(pole_c, pole_a, -1, 2);
+    move_disc(pole_c, pole_a, -1, 2, Qt::red);
 }
 
 void MainWindow::on_push_button_cb_clicked()
 {
-    move_disc(pole_c, pole_b, -1);
+    move_disc(pole_c, pole_b, -1, 1, Qt::green);
 }
 
 void MainWindow::check_win()
@@ -141,7 +147,12 @@ void MainWindow::check_win()
         ui_->push_button_bc->setDisabled(true);
         ui_->push_button_ca->setDisabled(true);
         ui_->push_button_cb->setDisabled(true);
+        ui_->push_button_autoplay->setDisabled(true);
         timer_->stop();
+        autoplay_timer_->stop();
+        ui_->lcd_number_minutes->setPalette(Qt::red);
+        ui_->lcd_number_seconds->setPalette(Qt::red);
+        ui_->label_timer->setText("Final time");
     }
 }
 
@@ -201,4 +212,35 @@ void MainWindow::check_poles()
     }else{
         ui_->push_button_cb->setDisabled(true);
     }
+}
+
+void MainWindow::on_push_button_autoplay_clicked()
+{
+    autoplay_timer_->start(500);
+    timer_->start(1000);
+
+//    for (int i = 1; i <= ((2^n) - 1); ++i)
+}
+
+void MainWindow::autoplay()
+{
+
+    if (is_possible(pole_a, pole_b)){
+        move_disc(pole_a, pole_b, 1, 1, Qt::green);
+    }else{
+        move_disc(pole_b, pole_a, -1, 1, Qt::red);
+    }
+
+    if (is_possible(pole_a, pole_c)){
+        move_disc(pole_a, pole_c, 1, 2, Qt::blue);
+    }else{
+        move_disc(pole_c, pole_a, -1, 2, Qt::red);
+    }
+
+    if (is_possible(pole_b, pole_c)){
+        move_disc(pole_b, pole_c, 1, 1, Qt::blue);
+    }else{
+        move_disc(pole_c, pole_b, -1, 1, Qt::green);
+    }
+
 }

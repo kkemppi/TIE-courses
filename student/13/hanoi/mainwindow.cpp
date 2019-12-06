@@ -17,11 +17,15 @@ MainWindow::MainWindow(QWidget *parent) :
     ui_(new Ui::MainWindow)
 {
     ui_->setupUi(this);
+
+
     timer_ = new QTimer(this);
     autoplay_timer_ = new QTimer(this);
+    scene_ = new QGraphicsScene(this);
+
+
     connect(timer_, &QTimer::timeout, this, &MainWindow::update);
     connect(autoplay_timer_, &QTimer::timeout, this, &MainWindow::autoplay);
-    scene_ = new QGraphicsScene(this);
 
 
     int left_margin = 10; // x coordinate
@@ -39,9 +43,7 @@ MainWindow::MainWindow(QWidget *parent) :
     QBrush greenBrush(Qt::green);
     QPen blackPen(Qt::black);
 
-    if (user_defined_n){
-        // Implementation for custom n
-    }
+
     int i = 0;
     while(i<n){
         int width = MAX_WIDTH-(i*DECREASE_INCEREMENT);
@@ -91,9 +93,9 @@ void MainWindow::move_disc(std::vector<Disc>& start, std::vector<Disc>& end, int
 
 void MainWindow::update()
 {
-    ui_->lcd_number_seconds->display(ui_->lcd_number_seconds->value()+1);
+    ui_->lcd_number_seconds->display(ui_->lcd_number_seconds->value()+0.1);
     if (ui_->lcd_number_seconds->value() == 60){
-        ui_->lcd_number_minutes->display(ui_->lcd_number_minutes->value()+1);
+        ui_->lcd_number_minutes->display(ui_->lcd_number_minutes->value()+0.1);
         ui_->lcd_number_seconds->display(0);
     }
 }
@@ -102,7 +104,7 @@ void MainWindow::update()
 void MainWindow::on_push_button_ab_clicked()
 {
     if (!(timer_->isActive())){
-        timer_->start(1000);
+        timer_->start(100);
     }
     move_disc(pole_a, pole_b, 1, 1, Qt::green);
 
@@ -112,7 +114,7 @@ void MainWindow::on_push_button_ab_clicked()
 void MainWindow::on_push_button_ac_clicked()
 {
     if (!(timer_->isActive())){
-        timer_->start(1000);
+        timer_->start(100);
     }
     move_disc(pole_a, pole_c, 1, 2, Qt::blue);
 }
@@ -140,7 +142,7 @@ void MainWindow::on_push_button_cb_clicked()
 
 void MainWindow::check_win()
 {
-    if (pole_a.empty() && pole_b.empty()){
+    if ((pole_a.empty() && pole_b.empty()) || (pole_a.empty() && pole_c.empty() )){
         ui_->push_button_ab->setDisabled(true);
         ui_->push_button_ac->setDisabled(true);
         ui_->push_button_ba->setDisabled(true);
@@ -216,10 +218,10 @@ void MainWindow::check_poles()
 
 void MainWindow::on_push_button_autoplay_clicked()
 {
-    autoplay_timer_->start(500);
-    timer_->start(1000);
+    autoplay_timer_->start(1000);
+    timer_->start(100);
 
-//    for (int i = 1; i <= ((2^n) - 1); ++i)
+
 }
 
 void MainWindow::autoplay()

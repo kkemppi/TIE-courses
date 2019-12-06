@@ -20,8 +20,9 @@ class MainWindow : public QMainWindow
 public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
-    bool user_defined_n = false;
-    int n = 6;
+
+    // Set number of discs here
+    int n = 2;
 
     int move_counter;
 
@@ -34,7 +35,6 @@ public:
     std::vector<Disc> pole_b;
     std::vector<Disc> pole_c;
 
-    QLabel* history;
 
 
 

@@ -23,7 +23,7 @@ public:
     void keyPressEvent(QKeyEvent* event) override;
 
     // Set number of discs here
-    int n = 6;
+    int n = 5;
 
     int move_counter;
     int autoplay_counter;

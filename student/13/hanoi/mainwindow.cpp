@@ -109,6 +109,7 @@ void MainWindow::on_push_button_ab_clicked()
         timer_->start(100);
     }
     move_disc(pole_a, pole_b, 1, 1, Qt::green);
+    ui_->push_button_autoplay->setDisabled(true);
 
 }
 
@@ -119,6 +120,7 @@ void MainWindow::on_push_button_ac_clicked()
         timer_->start(100);
     }
     move_disc(pole_a, pole_c, 1, 2, Qt::blue);
+    ui_->push_button_autoplay->setDisabled(true);
 }
 
 void MainWindow::on_push_button_ba_clicked()

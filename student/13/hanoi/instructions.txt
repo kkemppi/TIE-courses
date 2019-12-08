@@ -3,20 +3,24 @@ Hanoin torni
 Pelin tarkoituksena on siirtää kaikki alkutapin kiekot jompaan kumpaan
 maalitappiin. Kumpaan tahansa siirrettynä voittaa pelin.
 
-Kiekkojen määrää voi muuttaa mainwindow.hh tiedoston muuttujasta int n.
+Kiekkojen määrää voi muuttaa mainwindow.hh tiedoston riviltä 121, muuttujasta
+"int n". Muuttujaa TIMESCALE voi myös muuttaa skaalatakseen pelin aikaa, jolloin
+automaattinen ratkaisu muuttuu nopeammaksi.
 
 Tapit on nimetty vasemmalta oikealle A, B ja C. B ja C ovat maalitappeja.
 
 Kiekkojen siirtäminen tapahtuu joko painonapeilla tai niiden päällä esitetyillä
 näppäinkomennoilla.
 
-Kiekkoja voi siirtää vain siten, että pienempi kiekko on suuremman päällä.
+Kiekkoja voi siirtää vain siten, että pienempi kiekko tulee suuremman päälle.
 Väärien siirtojen tekeminen on estetty asettamalla niitä siirtoja kuvaavat
 painonapit pois käytöstä, sekä tarkistamalla käyttäjän antaman näppäinkomennon
 kuvaama siirto ennen sen tekemistä.
 
 Pelin loputtua peli näyttää pelaajalle ilmoituksen voitosta ja jättää näkyviin
 lopullisen ajan.
+
+Aloittaakseen pelin alusta pelaajan tulee sulkea se ja käynnistää uudestaan.
 
 
 Lisäominaisuudet:
@@ -26,7 +30,9 @@ napin avulla. Automaattisen ratkaisun voi käynnistää vain ennen ensimmäistä
 siirtoa, sillä käytetty iteratiivinen algoritmi ei toimi kuin lähtötilanteessa.
 Automaattisen ratkaisun voi keskeyttää milloin vain ja peliä jatkaa
 manuaalisesti tilanteesta johon jäätiin, mutta automaattista ratkaisua ei voi
-käynnistää uudelleen aloittamatta peliä alusta.
+käynnistää uudelleen aloittamatta peliä alusta. Automaattinen ratkaisu siirtää
+kaikki kiekot tappiin C. Siirrot tapahtuvat vakiona kerran sekunnissa, mutta
+nopeutta voi muuttaa vaihtamalla muuttujan TIMESCALE arvoa.
 
 Eri väriset tapit: Jokaisella tapilla on oma värinsä ja kiekon siirtyessä
 tapista toiseen se vaihtaa väriä kohdetapin väriksi.
@@ -39,3 +45,6 @@ Toinen tapa liikutella kiekkoja: Kiekkoja voi liikutella näppäinkomennoilla
 Q, W, E, R, T ja Y, jotka vastaavat käyttöliittymässä niiden alla olevien
 painonappien kuvaamia siirtoja. Näppäinkomentoihin pätevät samat rajoitukset
 kuin painonappeihin.
+
+Pelihistoria: Pelaajalle näytetään historia tehdyistä siirroista. Historia näkyy
+myös automaattista ratkaisua käyttäessä.

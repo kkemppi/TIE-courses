@@ -33,7 +33,7 @@ MainWindow::MainWindow(QWidget *parent) :
     int left_margin = 10; // x coordinate
     int top_margin = 270; // y coordinate
 
-    // Take 1px wide borders into account
+    // Create a graphicsView and take 1px wide borders into account
     ui_->graphicsView->setGeometry(left_margin, top_margin,
                                    BORDER_RIGHT + 2, BORDER_DOWN + 2);
     ui_->graphicsView->setScene(scene_);
@@ -46,7 +46,7 @@ MainWindow::MainWindow(QWidget *parent) :
     QPen blackPen(Qt::black);
 
     // Create as many discs as specified in const int n and add discs
-    // to container
+    // to container and to the game board.
     int i = 0;
     while(i<n){
         int width = MAX_WIDTH-(i*DECREASE_INCEREMENT);
@@ -59,9 +59,9 @@ MainWindow::MainWindow(QWidget *parent) :
     }
 
     // Create three poles
-    scene_->addRect(LEFT_POLE+(MAX_WIDTH/2)-(MIN_WIDTH-5), BORDER_UP, MIN_WIDTH-5, BORDER_DOWN, blackPen, redBrush);
-    scene_->addRect(MIDDLE_POLE+(MAX_WIDTH/2)-(MIN_WIDTH-5), BORDER_UP, MIN_WIDTH-5, BORDER_DOWN, blackPen, greenBrush);
-    scene_->addRect(RIGHT_POLE+(MAX_WIDTH/2)-(MIN_WIDTH-5), BORDER_UP, MIN_WIDTH-5, BORDER_DOWN, blackPen, blueBrush);
+    scene_->addRect(LEFT_POLE+(MAX_WIDTH/2)-(MIN_WIDTH-(MIN_WIDTH/2)), BORDER_UP, MIN_WIDTH/2, BORDER_DOWN, blackPen, redBrush);
+    scene_->addRect(MIDDLE_POLE+(MAX_WIDTH/2)-(MIN_WIDTH-(MIN_WIDTH/2)), BORDER_UP, MIN_WIDTH/2, BORDER_DOWN, blackPen, greenBrush);
+    scene_->addRect(RIGHT_POLE+(MAX_WIDTH/2)-(MIN_WIDTH-(MIN_WIDTH/2)), BORDER_UP, MIN_WIDTH/2, BORDER_DOWN, blackPen, blueBrush);
 
     // Set colors to timer numbers
     ui_->lcd_number_minutes->setPalette(Qt::green);
@@ -74,27 +74,16 @@ MainWindow::MainWindow(QWidget *parent) :
 
 }
 
+
 MainWindow::~MainWindow()
 {
     delete ui_;
 }
 
-/*  Function for moving a disc from start pole to end pole. Checks both poles'
- * height and determines the vertical distance to move, and then moves according
- * to given parameters. Adds the Disc to the target pole's container and removes
- * it from start pole's. After every move the win condition and available moves
- * are checked
- *
- * Params:
- * std::vector<Disc>& start: Starting pole
- * std::vector<Disc>& end: Destination pole
- * int dir: Direction of movement, -1 for left, 1 for right
- * int dist: Distance of movement, 1 for moving by one POLE_GAP, 2 for moving
- * by two POLE_GAPs
- * QBrush color: Color of the destination pole
- */
+
 void MainWindow::move_disc(std::vector<Disc>& start, std::vector<Disc>& end, int dir, int dist, QBrush color)
 {
+    // Determine y_offset and move disc
     if (start.size() > end.size()){
         qreal y_offset = (start.size()*DISC_HEIGHT)-(end.size()*DISC_HEIGHT);
         start.at(start.size()-1).disc->moveBy(dist*dir*POLE_GAP, y_offset-DISC_HEIGHT);
@@ -107,12 +96,13 @@ void MainWindow::move_disc(std::vector<Disc>& start, std::vector<Disc>& end, int
         start.at((start.size()-1)).disc->moveBy(dist*dir*POLE_GAP, -y_offset);
     }
 
-    // Add to
+    // Add the disc to the end pole's container and remove from start pole's
     end.push_back(start.at((start.size()-1)));
     start.pop_back();
+
     end.at(end.size()-1).disc->setBrush(color);
 
-    // If not using autoplay, check for legal moves
+    // If not using autoplay, update buttons
     if (!autoplay_timer_->isActive()){
         check_poles();
     }
@@ -123,15 +113,6 @@ void MainWindow::move_disc(std::vector<Disc>& start, std::vector<Disc>& end, int
     ui_->list_widget->scrollToBottom();
 
     check_win();
-}
-
-void MainWindow::update()
-{
-    ui_->lcd_number_seconds->display(ui_->lcd_number_seconds->value()+0.1);
-    if (ui_->lcd_number_seconds->value() >= 60){
-        ui_->lcd_number_minutes->display(ui_->lcd_number_minutes->value()+1);
-        ui_->lcd_number_seconds->display(0);
-    }
 }
 
 
@@ -183,6 +164,7 @@ void MainWindow::on_push_button_cb_clicked()
     new QListWidgetItem(tr("C->B"), ui_->list_widget);
 }
 
+
 void MainWindow::check_win()
 {
     if ((pole_a.empty() && pole_b.empty()) || (pole_a.empty() && pole_c.empty() )){
@@ -203,7 +185,7 @@ void MainWindow::check_win()
     }
 }
 
-// Checks if you can move from first to second
+
 bool MainWindow::is_possible(std::vector<Disc>& first, std::vector<Disc>& second)
 {
     if (first.empty() && second.empty()){
@@ -221,6 +203,7 @@ bool MainWindow::is_possible(std::vector<Disc>& first, std::vector<Disc>& second
     }return false;
 
 }
+
 
 void MainWindow::check_poles()
 {
@@ -261,6 +244,17 @@ void MainWindow::check_poles()
     }
 }
 
+
+void MainWindow::update()
+{
+    ui_->lcd_number_seconds->display(ui_->lcd_number_seconds->value()+0.1);
+    if (ui_->lcd_number_seconds->value() >= 60){
+        ui_->lcd_number_minutes->display(ui_->lcd_number_minutes->value()+1);
+        ui_->lcd_number_seconds->display(0);
+    }
+}
+
+
 void MainWindow::on_push_button_autoplay_clicked()
 {
     autoplay();
@@ -275,37 +269,47 @@ void MainWindow::on_push_button_autoplay_clicked()
     ui_->push_button_autoplay->setDisabled(true);
 }
 
+
+void MainWindow::on_push_button_stop_autoplay_clicked()
+{
+    autoplay_timer_->stop();
+    check_poles();
+    ui_->push_button_stop_autoplay->setDisabled(true);
+}
+
 void MainWindow::autoplay()
 {
     if(autoplay_counter==0){
         if (is_possible(pole_a, pole_b)){
-            move_disc(pole_a, pole_b, 1, 1, Qt::green);
+            on_push_button_ab_clicked();
             autoplay_counter++;
         }else{
-            move_disc(pole_b, pole_a, -1, 1, Qt::red);
+            on_push_button_ba_clicked();
             autoplay_counter++;
         }
     }
     else if(autoplay_counter==1){
         if (is_possible(pole_a, pole_c)){
-            move_disc(pole_a, pole_c, 1, 2, Qt::blue);
+            on_push_button_ac_clicked();
             autoplay_counter++;
         }else{
-            move_disc(pole_c, pole_a, -1, 2, Qt::red);
+            on_push_button_ca_clicked();
             autoplay_counter++;
         }
     }
     else if(autoplay_counter==2){
         if (is_possible(pole_b, pole_c)){
-            move_disc(pole_b, pole_c, 1, 1, Qt::blue);
+            on_push_button_bc_clicked();
             autoplay_counter = 0;
         }else{
-            move_disc(pole_c, pole_b, -1, 1, Qt::green);
+            on_push_button_cb_clicked();
             autoplay_counter = 0;
         }
     }
 }
 
+
+// Handles user's key presses
 void MainWindow::keyPressEvent(QKeyEvent* event) {
 
     if(event->key() == Qt::Key_Q) {
@@ -340,9 +344,3 @@ void MainWindow::keyPressEvent(QKeyEvent* event) {
     }
 }
 
-void MainWindow::on_push_button_stop_autoplay_clicked()
-{
-    autoplay_timer_->stop();
-    check_poles();
-    ui_->push_button_stop_autoplay->setDisabled(true);
-}

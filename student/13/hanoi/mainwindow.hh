@@ -1,3 +1,20 @@
+/* Module: MainWindow
+ * ---------------
+ * The main window for Hanoi's Tower game.
+ * ---------------
+ *
+ * This is a game where you have to move all discs from the starting pole to
+ * another pole. Detailed instructions in Finnish in instructions.txt
+ *
+ * Mikko Kemppi, 272670
+ * mikko.kemppi@tuni.fi
+ *
+ *
+ * ---------------
+ * TIE-02201 S2019
+ * */
+
+
 #ifndef MAINWINDOW_HH
 #define MAINWINDOW_HH
 
@@ -22,27 +39,17 @@ public:
     ~MainWindow();
     void keyPressEvent(QKeyEvent* event) override;
 
-    // Set number of discs here
-    int n = 5;
 
-    int move_counter;
-    int autoplay_counter;
-
+    // Data structure for a single disc
     struct Disc{
         QGraphicsRectItem* disc;
         int width;
     };
 
+    // Containers for Discs
     std::vector<Disc> pole_a;
     std::vector<Disc> pole_b;
     std::vector<Disc> pole_c;
-
-
-
-
-
-//    void keyPressEvent(QKeyEvent* event) override;
-
 
 private slots:
     void move_disc(std::vector<Disc> &start, std::vector<Disc> &end, int dir, int dist, QBrush color);
@@ -81,10 +88,13 @@ private:
     QTimer* timer_;
     QTimer* autoplay_timer_;
 
+    // Set number of discs here
+    const int n = 6;
 
 
-
-    const int DEFAULT_DISCS = 6;
+    // Default scale of time, value of 1 equals 1 in-game second is 1 real-life
+    // second
+    const float TIMESCALE = 1;
     const int BORDER_UP = 0;
     const int BORDER_DOWN = 260;
     const int BORDER_LEFT = 0;
@@ -98,6 +108,10 @@ private:
     const int MIN_WIDTH = 10;
     int DECREASE_INCEREMENT = (MAX_WIDTH - MIN_WIDTH) / n;
     int DISC_HEIGHT = BORDER_DOWN / n;
+
+
+    int move_counter = 0;
+    int autoplay_counter = 0;
 
     QPoint a;
     QPoint b;

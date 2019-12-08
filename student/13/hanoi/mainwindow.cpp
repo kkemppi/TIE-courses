@@ -7,6 +7,8 @@
 #include <QLabel>
 #include <QString>
 #include <QDebug>
+#include <QListWidget>
+#include <QListWidgetItem>
 
 #define a_last pole_a.size()-1
 #define b_last pole_b.size()-1
@@ -19,8 +21,8 @@ MainWindow::MainWindow(QWidget *parent) :
     ui_->setupUi(this);
 
 
-    timer_ = new QTimer(this);
-    autoplay_timer_ = new QTimer(this);
+    timer_ = new QTimer(this);          // Timer for displaying gametime
+    autoplay_timer_ = new QTimer(this); // Timer for making autoplay moves
     scene_ = new QGraphicsScene(this);
 
 
@@ -31,7 +33,7 @@ MainWindow::MainWindow(QWidget *parent) :
     int left_margin = 10; // x coordinate
     int top_margin = 270; // y coordinate
 
-
+    // Take 1px wide borders into account
     ui_->graphicsView->setGeometry(left_margin, top_margin,
                                    BORDER_RIGHT + 2, BORDER_DOWN + 2);
     ui_->graphicsView->setScene(scene_);
@@ -43,19 +45,29 @@ MainWindow::MainWindow(QWidget *parent) :
     QBrush greenBrush(Qt::green);
     QPen blackPen(Qt::black);
 
-
+    // Create as many discs as specified in const int n and add discs
+    // to container
     int i = 0;
     while(i<n){
         int width = MAX_WIDTH-(i*DECREASE_INCEREMENT);
-        struct Disc disc = {(scene_->addRect(LEFT_POLE+(i*(DECREASE_INCEREMENT/2)), BORDER_DOWN-((i+1)*DISC_HEIGHT), width, DISC_HEIGHT, blackPen, redBrush)), width};
+        struct Disc disc = {(scene_->addRect(LEFT_POLE+(i*
+        (DECREASE_INCEREMENT/2)), BORDER_DOWN-((i+1)*DISC_HEIGHT), width,
+        DISC_HEIGHT, blackPen, redBrush)), width};
+
         ++i;
         pole_a.push_back(disc);
     }
+
+    // Create three poles
     scene_->addRect(LEFT_POLE+(MAX_WIDTH/2)-(MIN_WIDTH-5), BORDER_UP, MIN_WIDTH-5, BORDER_DOWN, blackPen, redBrush);
     scene_->addRect(MIDDLE_POLE+(MAX_WIDTH/2)-(MIN_WIDTH-5), BORDER_UP, MIN_WIDTH-5, BORDER_DOWN, blackPen, greenBrush);
     scene_->addRect(RIGHT_POLE+(MAX_WIDTH/2)-(MIN_WIDTH-5), BORDER_UP, MIN_WIDTH-5, BORDER_DOWN, blackPen, blueBrush);
+
+    // Set colors to timer numbers
     ui_->lcd_number_minutes->setPalette(Qt::green);
     ui_->lcd_number_seconds->setPalette(Qt::blue);
+
+    // Disable buttons with illegal moves
     check_poles();
 
 
@@ -67,8 +79,21 @@ MainWindow::~MainWindow()
     delete ui_;
 }
 
-
-void MainWindow::move_disc(std::vector<Disc>& start, std::vector<Disc>& end, int dir, int dist, QBrush color = Qt::red)
+/*  Function for moving a disc from start pole to end pole. Checks both poles'
+ * height and determines the vertical distance to move, and then moves according
+ * to given parameters. Adds the Disc to the target pole's container and removes
+ * it from start pole's. After every move the win condition and available moves
+ * are checked
+ *
+ * Params:
+ * std::vector<Disc>& start: Starting pole
+ * std::vector<Disc>& end: Destination pole
+ * int dir: Direction of movement, -1 for left, 1 for right
+ * int dist: Distance of movement, 1 for moving by one POLE_GAP, 2 for moving
+ * by two POLE_GAPs
+ * QBrush color: Color of the destination pole
+ */
+void MainWindow::move_disc(std::vector<Disc>& start, std::vector<Disc>& end, int dir, int dist, QBrush color)
 {
     if (start.size() > end.size()){
         qreal y_offset = (start.size()*DISC_HEIGHT)-(end.size()*DISC_HEIGHT);
@@ -82,22 +107,29 @@ void MainWindow::move_disc(std::vector<Disc>& start, std::vector<Disc>& end, int
         start.at((start.size()-1)).disc->moveBy(dist*dir*POLE_GAP, -y_offset);
     }
 
+    // Add to
     end.push_back(start.at((start.size()-1)));
     start.pop_back();
     end.at(end.size()-1).disc->setBrush(color);
+
+    // If not using autoplay, check for legal moves
     if (!autoplay_timer_->isActive()){
         check_poles();
     }
+
+    // Increase move counter by one
     move_counter++;
     ui_->label_move_counter->setText(QString::number(move_counter));
+    ui_->list_widget->scrollToBottom();
+
     check_win();
 }
 
 void MainWindow::update()
 {
     ui_->lcd_number_seconds->display(ui_->lcd_number_seconds->value()+0.1);
-    if (ui_->lcd_number_seconds->value() == 60){
-        ui_->lcd_number_minutes->display(ui_->lcd_number_minutes->value()+0.1);
+    if (ui_->lcd_number_seconds->value() >= 60){
+        ui_->lcd_number_minutes->display(ui_->lcd_number_minutes->value()+1);
         ui_->lcd_number_seconds->display(0);
     }
 }
@@ -106,42 +138,49 @@ void MainWindow::update()
 void MainWindow::on_push_button_ab_clicked()
 {
     if (!(timer_->isActive())){
-        timer_->start(100);
+        timer_->start(100*TIMESCALE);
     }
     move_disc(pole_a, pole_b, 1, 1, Qt::green);
     ui_->push_button_autoplay->setDisabled(true);
-
+    ui_->push_button_stop_autoplay->setDisabled(true);
+    new QListWidgetItem(tr("A->B"), ui_->list_widget);
 }
 
 
 void MainWindow::on_push_button_ac_clicked()
 {
     if (!(timer_->isActive())){
-        timer_->start(100);
+        timer_->start(100*TIMESCALE);
     }
     move_disc(pole_a, pole_c, 1, 2, Qt::blue);
     ui_->push_button_autoplay->setDisabled(true);
+    ui_->push_button_stop_autoplay->setDisabled(true);
+    new QListWidgetItem(tr("A->C"), ui_->list_widget);
 }
 
 void MainWindow::on_push_button_ba_clicked()
 {
     move_disc(pole_b, pole_a, -1, 1, Qt::red);
+    new QListWidgetItem(tr("B->A"), ui_->list_widget);
 }
 
 
 void MainWindow::on_push_button_bc_clicked()
 {
     move_disc(pole_b, pole_c, 1, 1 , Qt::blue);
+    new QListWidgetItem(tr("B->C"), ui_->list_widget);
 }
 
 void MainWindow::on_push_button_ca_clicked()
 {
     move_disc(pole_c, pole_a, -1, 2, Qt::red);
+    new QListWidgetItem(tr("C->A"), ui_->list_widget);
 }
 
 void MainWindow::on_push_button_cb_clicked()
 {
     move_disc(pole_c, pole_b, -1, 1, Qt::green);
+    new QListWidgetItem(tr("C->B"), ui_->list_widget);
 }
 
 void MainWindow::check_win()
@@ -224,8 +263,9 @@ void MainWindow::check_poles()
 
 void MainWindow::on_push_button_autoplay_clicked()
 {
-    autoplay_timer_->start(1000);
-    timer_->start(100);
+    autoplay();
+    autoplay_timer_->start(1000*TIMESCALE);
+    timer_->start(100*TIMESCALE);
     ui_->push_button_ab->setDisabled(true);
     ui_->push_button_ac->setDisabled(true);
     ui_->push_button_ba->setDisabled(true);

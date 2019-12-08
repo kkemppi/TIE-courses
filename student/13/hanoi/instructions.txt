@@ -1,0 +1,41 @@
+Hanoin torni
+
+Pelin tarkoituksena on siirtää kaikki alkutapin kiekot jompaan kumpaan
+maalitappiin. Kumpaan tahansa siirrettynä voittaa pelin.
+
+Kiekkojen määrää voi muuttaa mainwindow.hh tiedoston muuttujasta int n.
+
+Tapit on nimetty vasemmalta oikealle A, B ja C. B ja C ovat maalitappeja.
+
+Kiekkojen siirtäminen tapahtuu joko painonapeilla tai niiden päällä esitetyillä
+näppäinkomennoilla.
+
+Kiekkoja voi siirtää vain siten, että pienempi kiekko on suuremman päällä.
+Väärien siirtojen tekeminen on estetty asettamalla niitä siirtoja kuvaavat
+painonapit pois käytöstä, sekä tarkistamalla käyttäjän antaman näppäinkomennon
+kuvaama siirto ennen sen tekemistä.
+
+Pelin loputtua peli näyttää pelaajalle ilmoituksen voitosta ja jättää näkyviin
+lopullisen ajan.
+
+
+Lisäominaisuudet:
+
+Animointiominaisuus: Peli on mahdollista pelata läpi automaattisesti "Autoplay"
+napin avulla. Automaattisen ratkaisun voi käynnistää vain ennen ensimmäistä
+siirtoa, sillä käytetty iteratiivinen algoritmi ei toimi kuin lähtötilanteessa.
+Automaattisen ratkaisun voi keskeyttää milloin vain ja peliä jatkaa
+manuaalisesti tilanteesta johon jäätiin, mutta automaattista ratkaisua ei voi
+käynnistää uudelleen aloittamatta peliä alusta.
+
+Eri väriset tapit: Jokaisella tapilla on oma värinsä ja kiekon siirtyessä
+tapista toiseen se vaihtaa väriä kohdetapin väriksi.
+
+Ajastin: Peli laskee ensimmäisestä siirrosta kuluneen ajan ja näyttää sen
+pelaajalle 0.1s tarkkuudella. Pelin loppuessa ajastin pysähtyy ja jää näyttämään
+lopullisen ajan.
+
+Toinen tapa liikutella kiekkoja: Kiekkoja voi liikutella näppäinkomennoilla
+Q, W, E, R, T ja Y, jotka vastaavat käyttöliittymässä niiden alla olevien
+painonappien kuvaamia siirtoja. Näppäinkomentoihin pätevät samat rajoitukset
+kuin painonappeihin.

@@ -123,7 +123,9 @@ void MainWindow::on_push_button_ab_clicked()
     }
     move_disc(pole_a, pole_b, 1, 1, Qt::green);
     ui_->push_button_autoplay->setDisabled(true);
-    ui_->push_button_stop_autoplay->setDisabled(true);
+    if (!autoplay_timer_->isActive()){
+        ui_->push_button_stop_autoplay->setDisabled(true);
+    }
     new QListWidgetItem(tr("A->B"), ui_->list_widget);
 }
 
@@ -135,7 +137,9 @@ void MainWindow::on_push_button_ac_clicked()
     }
     move_disc(pole_a, pole_c, 1, 2, Qt::blue);
     ui_->push_button_autoplay->setDisabled(true);
-    ui_->push_button_stop_autoplay->setDisabled(true);
+    if (!autoplay_timer_->isActive()){
+        ui_->push_button_stop_autoplay->setDisabled(true);
+    }
     new QListWidgetItem(tr("A->C"), ui_->list_widget);
 }
 
@@ -257,8 +261,8 @@ void MainWindow::update()
 
 void MainWindow::on_push_button_autoplay_clicked()
 {
-    autoplay();
     autoplay_timer_->start(1000*TIMESCALE);
+    autoplay();
     timer_->start(100*TIMESCALE);
     ui_->push_button_ab->setDisabled(true);
     ui_->push_button_ac->setDisabled(true);

@@ -122,7 +122,7 @@ private:
 
     // Set number of discs here, values of over 20 make the game last very long,
     // and might make the towers look wonky
-    const int n = 23;
+    const int n = 6;
 
 
     // Default scale of time, value of 1 equals 1 in-game second is 1 real-life

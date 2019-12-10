@@ -31,8 +31,9 @@ siirtoa, sillä käytetty iteratiivinen algoritmi ei toimi kuin lähtötilantees
 Automaattisen ratkaisun voi keskeyttää milloin vain ja peliä jatkaa
 manuaalisesti tilanteesta johon jäätiin, mutta automaattista ratkaisua ei voi
 käynnistää uudelleen aloittamatta peliä alusta. Automaattinen ratkaisu siirtää
-kaikki kiekot tappiin C. Siirrot tapahtuvat vakiona kerran sekunnissa, mutta
-nopeutta voi muuttaa vaihtamalla muuttujan TIMESCALE arvoa.
+kaikki kiekot tappiin C tai B, riippuen aloituskiekkojen määrästä.
+Siirrot tapahtuvat vakiona kerran sekunnissa, mutta nopeutta voi muuttaa
+vaihtamalla muuttujan TIMESCALE arvoa.
 
 Eri väriset tapit: Jokaisella tapilla on oma värinsä ja kiekon siirtyessä
 tapista toiseen se vaihtaa väriä kohdetapin väriksi.
@@ -48,3 +49,8 @@ kuin painonappeihin.
 
 Pelihistoria: Pelaajalle näytetään historia tehdyistä siirroista. Historia näkyy
 myös automaattista ratkaisua käyttäessä.
+
+Tehtyjen siirtojen määrä: Peli näyttää käyttäjän tekemien siirtojen lukumäärän,
+sekä sen, kuinka monta siirtoa on jäljellä optimaaliseen ratkaisuun.
+Optimaalisen ratkaisun siirtojen lukumäärä on 2^n-1, jossa n on kiekkojen
+lukumäärä.

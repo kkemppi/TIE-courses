@@ -25,6 +25,7 @@
 #include <vector>
 #include <QPoint>
 #include <QLabel>
+#include <cmath>
 
 namespace Ui {
 class MainWindow;
@@ -122,7 +123,7 @@ private:
 
     // Set number of discs here, values of over 20 make the game last very long,
     // and might make the towers look wonky
-    const int n = 6;
+    const int n = 5;
 
 
     // Default scale of time, value of 1 equals 1 in-game second is 1 real-life
@@ -144,6 +145,7 @@ private:
     const int MIN_WIDTH = 10;
     const int DECREASE_INCEREMENT = (MAX_WIDTH - MIN_WIDTH) / n;
     const int DISC_HEIGHT = BORDER_DOWN / n;
+    const int MIN_MOVES = pow(2, n) - 1;
 
     // Counters for displaying used moves and to keep autoplay doing the right
     // move

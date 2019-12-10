@@ -59,9 +59,13 @@ MainWindow::MainWindow(QWidget *parent) :
     }
 
     // Create three poles
-    scene_->addRect(LEFT_POLE+(MAX_WIDTH/2)-(MIN_WIDTH-(MIN_WIDTH/2)), BORDER_UP, MIN_WIDTH/2, BORDER_DOWN, blackPen, redBrush);
-    scene_->addRect(MIDDLE_POLE+(MAX_WIDTH/2)-(MIN_WIDTH-(MIN_WIDTH/2)), BORDER_UP, MIN_WIDTH/2, BORDER_DOWN, blackPen, greenBrush);
-    scene_->addRect(RIGHT_POLE+(MAX_WIDTH/2)-(MIN_WIDTH-(MIN_WIDTH/2)), BORDER_UP, MIN_WIDTH/2, BORDER_DOWN, blackPen, blueBrush);
+    scene_->addRect(LEFT_POLE+(MAX_WIDTH/2)-(MIN_WIDTH-(MIN_WIDTH/2)),
+                    BORDER_UP, MIN_WIDTH/2, BORDER_DOWN, blackPen, redBrush);
+    scene_->addRect(MIDDLE_POLE+(MAX_WIDTH/2)-(MIN_WIDTH-(MIN_WIDTH/2)),
+                    BORDER_UP, MIN_WIDTH/2, BORDER_DOWN, blackPen, greenBrush);
+    scene_->addRect(RIGHT_POLE+(MAX_WIDTH/2)-(MIN_WIDTH-(MIN_WIDTH/2)),
+                    BORDER_UP, MIN_WIDTH/2, BORDER_DOWN, blackPen, blueBrush);
+    ui_->label_until_best->setText(QString::number(MIN_MOVES));
 
     // Set colors to timer numbers
     ui_->lcd_number_minutes->setPalette(Qt::green);
@@ -110,6 +114,7 @@ void MainWindow::move_disc(std::vector<Disc>& start, std::vector<Disc>& end, int
     // Increase move counter by one
     move_counter++;
     ui_->label_move_counter->setText(QString::number(move_counter));
+    ui_->label_until_best->setText(QString::number(MIN_MOVES-move_counter));
     ui_->list_widget->scrollToBottom();
 
     check_win();
@@ -179,6 +184,7 @@ void MainWindow::check_win()
         ui_->push_button_ca->setDisabled(true);
         ui_->push_button_cb->setDisabled(true);
         ui_->push_button_autoplay->setDisabled(true);
+        ui_->push_button_stop_autoplay->setDisabled(true);
         timer_->stop();
         autoplay_timer_->stop();
         ui_->lcd_number_minutes->setPalette(Qt::red);

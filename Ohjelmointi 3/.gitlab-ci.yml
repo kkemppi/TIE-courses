@@ -1,0 +1,116 @@
+# This GitLab CI configuration is used for the weekly exercies of
+# the course Ohjelmointi 3/Programming 3
+
+# For more information refer to: https://course-gitlab.tuni.fi/help/ci/README.md
+
+# We use an image based on Alpine Linux that contains
+# Qt 5.14.2 and the necessary stuff
+
+image: honksu/new-qt:5142
+
+# The stages of our current pipeline
+stages:
+  - build
+  - test
+
+# Build job to see that the EX1 project is created and the project is ready for submission.
+build_EX1:
+  stage: build
+  tags:
+    - qt
+  script: 
+    - cd EX1/DesignByContract
+    - qmake
+    - make
+    - make clean
+  allow_failure: true
+
+# Build job for Morottaja's unit test for EX3
+Morottaja:
+  # The runner must be able to run and compile Qt projects
+  tags:
+    - qt
+  # Build jobs naturally go to the build stage
+  # We could also have multi-stage builds if needed
+  stage: build
+  # The command line commands we want the CI environment to execute
+  # When the script section starts, the working directory is the repository's root
+  script: 
+    # Go to the correct directory
+    - cd EX3/UnitTests/Morottaja
+    # Run qmake to produce the makefile
+    - qmake
+    # Compile the project using the generated Makefile
+    - make
+    # Clean up the build
+    - make clean
+  # In a distributed CI system we need a way to pass the generated binary between jobs.
+  # GitLab CI provides artifacts to achieve this.
+  artifacts:
+    # Paths to the artifacts we want to pass
+    paths:
+      - EX3/UnitTests/Morottaja/morottajatest
+    # How long we store the artifacts in GitLab
+    expire_in: 2d
+
+# Test job for Morottaja's unit test in EX3
+MorottajaTest:
+  tags:
+    - qt
+  stage: test
+  script:
+    # Go to the correct directory
+    - cd EX3/UnitTests/Morottaja
+    # Run the test binary
+    - ./morottajatest
+  # On what jobs this dependes on, which artifacts we download for this job
+  dependencies:
+    - Morottaja
+
+Date:
+  tags:
+    - qt
+  stage: build
+  script: 
+    # Go to the correct directory
+    - cd EX3/UnitTests/Date
+    # Run qmake to produce the makefile
+    - qmake
+    # Compile the project using the generated Makefile
+    - make
+    # Clean up the build
+    - make clean
+  # In a distributed CI system we need a way to pass the generated binary between jobs.
+  # GitLab CI provides artifacts to achieve this.
+  artifacts:
+    # Paths to the artifacts we want to pass
+    paths:
+      - EX3/UnitTests/Date/datetest
+    # How long we store the artifacts in GitLab
+    expire_in: 2d
+
+# Test job for Morottaja's unit test in EX3
+DateTest:
+  tags:
+    - qt
+  stage: test
+  script:
+    # Go to the correct directory
+    - cd EX3/UnitTests/Date
+    # Run the test binary
+    - ./datetest
+  # On what jobs this dependes on, which artifacts we download for this job
+  dependencies:
+    - Date
+
+build_EX4:
+  stage: build
+  tags:
+    - qt
+  script: 
+    - cd EX4/Inheritance
+    - qmake
+    - make
+    - make clean
+  allow_failure: true
+

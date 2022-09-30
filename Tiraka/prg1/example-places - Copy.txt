@@ -1,0 +1,15 @@
+# Places
+add_place 10 'Laavu' shelter (3,3)
+add_place 15 'Pysakointi' parking (0,0)
+add_place 4 'Nuotiopaikka' firepit (0,7)
+add_place 20 'Rantanuotio' firepit (11,1)
+add_place 99 'Vesijarvi' area (10,3)
+add_place 98 'Luoto' area (10,5)
+add_place 78 'Lampi' area (1,5)
+add_place 123 'Metsa' area (7,10)
+add_place 124 'Metsa' area (6,8)
+add_place 125 'Lampi' area (5,1)
+add_place 79 'Lampi' area (1,5)
+remove_place 98
+change_place_name 98 'test'
+change_place_coord 98 (1,2)

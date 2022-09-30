@@ -1,0 +1,11 @@
+<RCC>
+    <qresource prefix="/">
+        <file>main.qml</file>
+        <file>Card.qml</file>
+        <file>VerdictRow.qml</file>
+        <file>GuessRow.qml</file>
+        <file>ButtonRow.qml</file>
+        <file>ResultRow.qml</file>
+        <file>ResetButtonRow.qml</file>
+    </qresource>
+</RCC>

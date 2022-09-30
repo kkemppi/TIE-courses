@@ -1,0 +1,8 @@
+<RCC>
+    <qresource prefix="/">
+        <file>main.qml</file>
+        <file>Card.qml</file>
+        <file>cardfront.jpg</file>
+        <file>cardback.png</file>
+    </qresource>
+</RCC>
